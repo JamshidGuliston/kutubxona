@@ -1,7 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "Bash(\"D:/OSPanel/modules/PHP-8.3/PHP/php.exe\" artisan:*)"
+      "Bash(\"D:/OSPanel/modules/PHP-8.3/PHP/php.exe\" artisan:*)",
+      "Bash(D:/OSPanel/modules/PHP-8.3/PHP/php.exe d:/OSPanel/home/kutubxona.uz/artisan tinker --execute=\":*)"
     ]
   }
 }

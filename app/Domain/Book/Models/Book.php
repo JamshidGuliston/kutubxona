@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace App\Domain\Book\Models;
 
+use App\Domain\Library\Models\Author;
+use App\Domain\Library\Models\Category;
+use App\Domain\Library\Models\Publisher;
+use App\Domain\Library\Models\Tag;
 use App\Domain\Reading\Models\Bookmark;
 use App\Domain\Reading\Models\Highlight;
 use App\Domain\Reading\Models\ReadingProgress;
@@ -127,6 +131,15 @@ final class Book extends Model
             if (auth()->check() && empty($book->created_by)) {
                 $book->created_by = auth()->id();
             }
+            if (empty($book->slug) && !empty($book->title)) {
+                $base = \Illuminate\Support\Str::slug($book->title);
+                $slug = $base;
+                $i = 1;
+                while (static::withoutGlobalScopes()->where('tenant_id', $book->tenant_id)->where('slug', $slug)->exists()) {
+                    $slug = $base . '-' . $i++;
+                }
+                $book->slug = $slug;
+            }
         });
 
         static::updating(function (self $book): void {
@@ -151,6 +164,11 @@ final class Book extends Model
     public function publisher(): BelongsTo
     {
         return $this->belongsTo(Publisher::class, 'publisher_id');
+    }
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class, 'category_id');
     }
 
     public function primaryCategory(): BelongsTo
@@ -183,7 +201,7 @@ final class Book extends Model
 
     public function reviews(): HasMany
     {
-        return $this->hasMany(\App\Domain\Reading\Models\Review::class, 'book_id')
+        return $this->hasMany(\App\Domain\Library\Models\Review::class, 'book_id')
             ->where('is_approved', true);
     }
 

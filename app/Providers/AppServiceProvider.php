@@ -45,11 +45,6 @@ final class AppServiceProvider extends ServiceProvider
         $this->app->bind(SearchService::class, SearchService::class);
         $this->app->bind(AudioBookService::class, AudioBookService::class);
 
-        // ── Telescope (dev only) ─────────────────────────────────────────────
-        if ($this->app->environment('local') && class_exists(\Laravel\Telescope\TelescopeServiceProvider::class)) {
-            $this->app->register(\Laravel\Telescope\TelescopeServiceProvider::class);
-            $this->app->register(TelescopeServiceProvider::class);
-        }
     }
 
     public function boot(): void

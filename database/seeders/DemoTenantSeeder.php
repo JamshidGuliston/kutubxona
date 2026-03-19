@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Database\Seeders;
 
 use App\Application\Services\TenantService;
+use App\Domain\Tenant\Models\Tenant;
 use Illuminate\Database\Seeder;
 
 final class DemoTenantSeeder extends Seeder
@@ -13,6 +14,11 @@ final class DemoTenantSeeder extends Seeder
     {
         if (app()->environment('production')) {
             $this->command->warn('Skipping DemoTenantSeeder in production.');
+            return;
+        }
+
+        if (Tenant::where('slug', 'demo')->exists()) {
+            $this->command->info('Demo tenant already exists, skipping.');
             return;
         }
 

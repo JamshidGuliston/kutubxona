@@ -10,6 +10,8 @@ use App\Domain\Reading\Models\Highlight;
 use App\Domain\Reading\Models\ReadingProgress;
 use App\Domain\Tenant\Models\Tenant;
 use App\Infrastructure\Scopes\TenantScope;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -42,7 +44,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @property \Carbon\Carbon $updated_at
  * @property \Carbon\Carbon|null $deleted_at
  */
-final class User extends Authenticatable implements JWTSubject, MustVerifyEmail
+final class User extends Authenticatable implements FilamentUser, JWTSubject, MustVerifyEmail
 {
     use HasFactory;
     use HasRoles;
@@ -109,6 +111,25 @@ final class User extends Authenticatable implements JWTSubject, MustVerifyEmail
                 $user->tenant_id = app('tenant')->id;
             }
         });
+    }
+
+    // ─── FilamentUser ────────────────────────────────────────────────────────────
+
+    public function canAccessPanel(Panel $panel): bool
+    {
+        $hasSuperAdmin = $this->roles()
+            ->where('name', 'super_admin')
+            ->where('guard_name', 'api')
+            ->exists();
+
+        return match ($panel->getId()) {
+            'super-admin' => $hasSuperAdmin,
+            'admin'       => $hasSuperAdmin || $this->roles()
+                ->where('name', 'tenant_admin')
+                ->where('guard_name', 'api')
+                ->exists(),
+            default       => false,
+        };
     }
 
     // ─── JWTSubject ─────────────────────────────────────────────────────────────
