@@ -1,0 +1,5 @@
+# =============================================================================
+# Laravel Scheduler — Cron Entry
+# Runs every minute as required by Laravel's scheduler
+# =============================================================================
+* * * * * appuser cd /var/www/html && php artisan schedule:run >> /dev/null 2>&1

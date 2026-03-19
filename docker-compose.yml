@@ -1,0 +1,525 @@
+version: '3.9'
+
+# =============================================================================
+# Kutubxona.uz — Multi-Tenant Digital Library Platform
+# Production-Ready Docker Compose
+# =============================================================================
+
+x-app-base: &app-base
+  image: kutubxona/app:${APP_VERSION:-latest}
+  build:
+    context: .
+    dockerfile: Dockerfile
+    target: production
+  networks:
+    - backend
+    - frontend
+  depends_on:
+    mysql:
+      condition: service_healthy
+    redis:
+      condition: service_healthy
+  environment:
+    APP_ENV: ${APP_ENV:-production}
+    APP_KEY: ${APP_KEY}
+    APP_DEBUG: ${APP_DEBUG:-false}
+    APP_URL: ${APP_URL:-https://kutubxona.uz}
+    APP_BASE_DOMAIN: ${APP_BASE_DOMAIN:-kutubxona.uz}
+    # Database
+    DB_CONNECTION: mysql
+    DB_HOST: mysql
+    DB_PORT: 3306
+    DB_DATABASE: ${DB_DATABASE:-kutubxona}
+    DB_USERNAME: ${DB_USERNAME:-kutubxona}
+    DB_PASSWORD: ${DB_PASSWORD}
+    # Redis
+    REDIS_HOST: redis
+    REDIS_PORT: 6379
+    REDIS_PASSWORD: ${REDIS_PASSWORD}
+    CACHE_DRIVER: redis
+    SESSION_DRIVER: redis
+    QUEUE_CONNECTION: redis
+    # AWS S3
+    AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+    AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+    AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION:-us-east-1}
+    AWS_BUCKET: ${AWS_BUCKET}
+    AWS_ENDPOINT: ${AWS_ENDPOINT:-}
+    AWS_USE_PATH_STYLE_ENDPOINT: ${AWS_USE_PATH_STYLE_ENDPOINT:-false}
+    # JWT
+    JWT_SECRET: ${JWT_SECRET}
+    JWT_ALGO: ${JWT_ALGO:-RS256}
+    JWT_PUBLIC_KEY: ${JWT_PUBLIC_KEY}
+    JWT_PRIVATE_KEY: ${JWT_PRIVATE_KEY}
+    JWT_PASSPHRASE: ${JWT_PASSPHRASE:-}
+    JWT_TTL: ${JWT_TTL:-60}
+    JWT_REFRESH_TTL: ${JWT_REFRESH_TTL:-20160}
+    # Mail
+    MAIL_MAILER: ${MAIL_MAILER:-smtp}
+    MAIL_HOST: ${MAIL_HOST}
+    MAIL_PORT: ${MAIL_PORT:-587}
+    MAIL_USERNAME: ${MAIL_USERNAME}
+    MAIL_PASSWORD: ${MAIL_PASSWORD}
+    MAIL_ENCRYPTION: ${MAIL_ENCRYPTION:-tls}
+    MAIL_FROM_ADDRESS: ${MAIL_FROM_ADDRESS:-noreply@kutubxona.uz}
+    MAIL_FROM_NAME: ${MAIL_FROM_NAME:-Kutubxona.uz}
+    # Tenancy
+    TENANT_CACHE_TTL: ${TENANT_CACHE_TTL:-600}
+    TENANT_DATABASE_MODE: ${TENANT_DATABASE_MODE:-shared}
+    TENANT_TRIAL_DAYS: ${TENANT_TRIAL_DAYS:-14}
+    DEFAULT_PLAN_SLUG: ${DEFAULT_PLAN_SLUG:-free}
+    # Storage limits
+    MAX_BOOK_FILE_MB: ${MAX_BOOK_FILE_MB:-100}
+    MAX_AUDIO_FILE_MB: ${MAX_AUDIO_FILE_MB:-300}
+    MAX_IMAGE_MB: ${MAX_IMAGE_MB:-5}
+    MAX_AVATAR_MB: ${MAX_AVATAR_MB:-2}
+    # Signed URL TTLs
+    SIGNED_URL_DOWNLOAD_TTL: ${SIGNED_URL_DOWNLOAD_TTL:-3600}
+    SIGNED_URL_STREAM_TTL: ${SIGNED_URL_STREAM_TTL:-900}
+    SIGNED_URL_AVATAR_TTL: ${SIGNED_URL_AVATAR_TTL:-86400}
+    # CDN
+    CDN_ENABLED: ${CDN_ENABLED:-false}
+    CDN_URL: ${CDN_URL:-}
+    # Security
+    VIRUS_SCAN_ENABLED: ${VIRUS_SCAN_ENABLED:-false}
+    BCRYPT_ROUNDS: ${BCRYPT_ROUNDS:-12}
+    # Horizon
+    HORIZON_ENABLED: ${HORIZON_ENABLED:-true}
+    # Telescope (disable in production)
+    TELESCOPE_ENABLED: ${TELESCOPE_ENABLED:-false}
+    # Logging
+    LOG_CHANNEL: ${LOG_CHANNEL:-stack}
+    LOG_LEVEL: ${LOG_LEVEL:-error}
+  volumes:
+    - app-storage:/var/www/html/storage/app
+    - ./docker/php/php.ini:/usr/local/etc/php/php.ini:ro
+  restart: unless-stopped
+
+services:
+
+  # ---------------------------------------------------------------------------
+  # Nginx — Reverse Proxy
+  # ---------------------------------------------------------------------------
+  nginx:
+    image: nginx:1.25-alpine
+    container_name: kutubxona_nginx
+    ports:
+      - "${NGINX_HTTP_PORT:-80}:80"
+      - "${NGINX_HTTPS_PORT:-443}:443"
+    volumes:
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./docker/nginx/ssl:/etc/nginx/ssl:ro
+      - app-storage:/var/www/html/storage/app:ro
+      - nginx-logs:/var/log/nginx
+    networks:
+      - frontend
+    depends_on:
+      - app
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "nginx", "-t"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
+
+  # ---------------------------------------------------------------------------
+  # PHP-FPM Application
+  # ---------------------------------------------------------------------------
+  app:
+    <<: *app-base
+    container_name: kutubxona_app
+    expose:
+      - "9000"
+    healthcheck:
+      test: ["CMD", "php-fpm", "-t"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "10"
+
+  # ---------------------------------------------------------------------------
+  # MySQL 8.0
+  # ---------------------------------------------------------------------------
+  mysql:
+    image: mysql:8.0
+    container_name: kutubxona_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE:-kutubxona}
+      MYSQL_USER: ${DB_USERNAME:-kutubxona}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./docker/mysql/my.cnf:/etc/mysql/conf.d/kutubxona.cnf:ro
+      - ./docker/mysql/init:/docker-entrypoint-initdb.d:ro
+    networks:
+      - backend
+    ports:
+      - "${MYSQL_EXTERNAL_PORT:-3306}:3306"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "--password=${MYSQL_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    command: >
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_unicode_ci
+      --default-authentication-plugin=mysql_native_password
+      --max-allowed-packet=256M
+      --innodb-buffer-pool-size=512M
+      --innodb-log-file-size=128M
+      --slow-query-log=1
+      --slow-query-log-file=/var/lib/mysql/slow.log
+      --long-query-time=2
+      --binlog-format=ROW
+      --log-bin=mysql-bin
+      --server-id=1
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "5"
+
+  # ---------------------------------------------------------------------------
+  # MySQL Read Replica (optional — enable for high traffic)
+  # ---------------------------------------------------------------------------
+  mysql-replica:
+    image: mysql:8.0
+    container_name: kutubxona_mysql_replica
+    profiles:
+      - replica
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    volumes:
+      - mysql-replica-data:/var/lib/mysql
+      - ./docker/mysql/replica.cnf:/etc/mysql/conf.d/replica.cnf:ro
+    networks:
+      - backend
+    depends_on:
+      mysql:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+    command: >
+      --server-id=2
+      --read-only=1
+      --relay-log=relay-bin
+
+  # ---------------------------------------------------------------------------
+  # Redis 7
+  # ---------------------------------------------------------------------------
+  redis:
+    image: redis:7-alpine
+    container_name: kutubxona_redis
+    command: >
+      redis-server
+      --requirepass ${REDIS_PASSWORD}
+      --maxmemory ${REDIS_MAX_MEMORY:-512mb}
+      --maxmemory-policy allkeys-lru
+      --appendonly yes
+      --appendfsync everysec
+      --save 900 1
+      --save 300 10
+      --save 60 10000
+    volumes:
+      - redis-data:/data
+    networks:
+      - backend
+    ports:
+      - "${REDIS_EXTERNAL_PORT:-6379}:6379"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD}", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # ---------------------------------------------------------------------------
+  # Queue Worker — Critical (payment, auth events)
+  # ---------------------------------------------------------------------------
+  queue-critical:
+    <<: *app-base
+    container_name: kutubxona_queue_critical
+    command: ["php", "artisan", "queue:work", "redis", "--queue=critical", "--tries=3", "--backoff=60,300,900", "--timeout=120", "--memory=256", "--sleep=1", "--max-jobs=1000"]
+    restart: unless-stopped
+    deploy:
+      replicas: 2
+      resources:
+        limits:
+          memory: 512M
+        reservations:
+          memory: 128M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "20m"
+        max-file: "5"
+
+  # ---------------------------------------------------------------------------
+  # Queue Worker — Emails
+  # ---------------------------------------------------------------------------
+  queue-emails:
+    <<: *app-base
+    container_name: kutubxona_queue_emails
+    command: ["php", "artisan", "queue:work", "redis", "--queue=emails", "--tries=5", "--backoff=60,180,300", "--timeout=60", "--memory=128", "--sleep=3", "--max-jobs=2000"]
+    restart: unless-stopped
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          memory: 256M
+        reservations:
+          memory: 64M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
+
+  # ---------------------------------------------------------------------------
+  # Queue Worker — File Processing (book/audio uploads)
+  # ---------------------------------------------------------------------------
+  queue-file-processing:
+    <<: *app-base
+    container_name: kutubxona_queue_file_processing
+    command: ["php", "artisan", "queue:work", "redis", "--queue=file-processing", "--tries=3", "--backoff=60,300,900", "--timeout=600", "--memory=512", "--sleep=5", "--max-jobs=500"]
+    restart: unless-stopped
+    deploy:
+      replicas: 2
+      resources:
+        limits:
+          memory: 1G
+        reservations:
+          memory: 256M
+    volumes:
+      - app-storage:/var/www/html/storage/app
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "5"
+
+  # ---------------------------------------------------------------------------
+  # Queue Worker — Analytics
+  # ---------------------------------------------------------------------------
+  queue-analytics:
+    <<: *app-base
+    container_name: kutubxona_queue_analytics
+    command: ["php", "artisan", "queue:work", "redis", "--queue=analytics", "--tries=2", "--backoff=30,120", "--timeout=300", "--memory=256", "--sleep=5", "--max-jobs=5000"]
+    restart: unless-stopped
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          memory: 512M
+        reservations:
+          memory: 128M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "20m"
+        max-file: "5"
+
+  # ---------------------------------------------------------------------------
+  # Queue Worker — Notifications
+  # ---------------------------------------------------------------------------
+  queue-notifications:
+    <<: *app-base
+    container_name: kutubxona_queue_notifications
+    command: ["php", "artisan", "queue:work", "redis", "--queue=notifications", "--tries=3", "--backoff=60,180,300", "--timeout=60", "--memory=128", "--sleep=3", "--max-jobs=2000"]
+    restart: unless-stopped
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          memory: 256M
+        reservations:
+          memory: 64M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
+
+  # ---------------------------------------------------------------------------
+  # Queue Worker — Default
+  # ---------------------------------------------------------------------------
+  queue-default:
+    <<: *app-base
+    container_name: kutubxona_queue_default
+    command: ["php", "artisan", "queue:work", "redis", "--queue=default", "--tries=3", "--backoff=30,60,120", "--timeout=90", "--memory=256", "--sleep=3", "--max-jobs=2000"]
+    restart: unless-stopped
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          memory: 512M
+        reservations:
+          memory: 128M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "20m"
+        max-file: "5"
+
+  # ---------------------------------------------------------------------------
+  # Laravel Horizon (Queue Dashboard)
+  # ---------------------------------------------------------------------------
+  horizon:
+    <<: *app-base
+    container_name: kutubxona_horizon
+    command: ["php", "artisan", "horizon"]
+    restart: unless-stopped
+    profiles:
+      - horizon
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+        reservations:
+          memory: 128M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "20m"
+        max-file: "5"
+
+  # ---------------------------------------------------------------------------
+  # Laravel Scheduler
+  # ---------------------------------------------------------------------------
+  scheduler:
+    <<: *app-base
+    container_name: kutubxona_scheduler
+    command: ["/bin/bash", "-c", "while true; do php artisan schedule:run --verbose --no-interaction & sleep 60; done"]
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+        reservations:
+          memory: 64M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
+
+  # ---------------------------------------------------------------------------
+  # MinIO — S3-compatible storage for local development
+  # ---------------------------------------------------------------------------
+  minio:
+    image: minio/minio:latest
+    container_name: kutubxona_minio
+    profiles:
+      - local
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minioadmin}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-minioadmin123}
+      MINIO_DOMAIN: ${MINIO_DOMAIN:-minio}
+    volumes:
+      - minio-data:/data
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    networks:
+      - backend
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # ---------------------------------------------------------------------------
+  # MinIO Setup — Creates default bucket
+  # ---------------------------------------------------------------------------
+  minio-setup:
+    image: minio/mc:latest
+    container_name: kutubxona_minio_setup
+    profiles:
+      - local
+    networks:
+      - backend
+    depends_on:
+      minio:
+        condition: service_healthy
+    entrypoint: >
+      /bin/sh -c "
+      /usr/bin/mc alias set myminio http://minio:9000 ${MINIO_ROOT_USER:-minioadmin} ${MINIO_ROOT_PASSWORD:-minioadmin123};
+      /usr/bin/mc mb --ignore-existing myminio/${AWS_BUCKET:-kutubxona-dev};
+      /usr/bin/mc policy set private myminio/${AWS_BUCKET:-kutubxona-dev};
+      exit 0;
+      "
+
+  # ---------------------------------------------------------------------------
+  # Mailpit — Local email testing
+  # ---------------------------------------------------------------------------
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: kutubxona_mailpit
+    profiles:
+      - local
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    networks:
+      - backend
+    restart: unless-stopped
+
+# =============================================================================
+# Networks
+# =============================================================================
+networks:
+  frontend:
+    driver: bridge
+    name: kutubxona_frontend
+  backend:
+    driver: bridge
+    name: kutubxona_backend
+    internal: true
+
+# =============================================================================
+# Volumes
+# =============================================================================
+volumes:
+  mysql-data:
+    name: kutubxona_mysql_data
+    driver: local
+  mysql-replica-data:
+    name: kutubxona_mysql_replica_data
+    driver: local
+  redis-data:
+    name: kutubxona_redis_data
+    driver: local
+  app-storage:
+    name: kutubxona_app_storage
+    driver: local
+  nginx-logs:
+    name: kutubxona_nginx_logs
+    driver: local
+  minio-data:
+    name: kutubxona_minio_data
+    driver: local
