@@ -84,6 +84,8 @@ final class Book extends Model
         'pages',
         'cover_image',
         'cover_thumbnail',
+        'pdf_path',
+        'audio_path',
         'status',
         'is_featured',
         'is_downloadable',
@@ -119,6 +121,8 @@ final class Book extends Model
         'created_by',
         'updated_by',
     ];
+
+    protected $appends = ['cover_url', 'thumbnail_url'];
 
     protected static function booted(): void
     {
@@ -277,7 +281,7 @@ final class Book extends Model
                 if (!$this->cover_image) return null;
                 return str_starts_with($this->cover_image, 'http')
                     ? $this->cover_image
-                    : config('filesystems.disks.s3.url') . '/' . $this->cover_image;
+                    : \Illuminate\Support\Facades\Storage::disk('uploads')->url($this->cover_image);
             }
         );
     }
@@ -289,7 +293,7 @@ final class Book extends Model
                 if (!$this->cover_thumbnail) return null;
                 return str_starts_with($this->cover_thumbnail, 'http')
                     ? $this->cover_thumbnail
-                    : config('filesystems.disks.s3.url') . '/' . $this->cover_thumbnail;
+                    : \Illuminate\Support\Facades\Storage::disk('uploads')->url($this->cover_thumbnail);
             }
         );
     }

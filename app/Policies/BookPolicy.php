@@ -47,8 +47,8 @@ final class BookPolicy
         }
 
         return $user->hasAnyRole(['tenant_admin', 'tenant_manager'])
-            && app()->has('tenant')
-            && $user->tenant_id === app('tenant')->id;
+            && $user->tenant_id !== null;
+
     }
 
     /**

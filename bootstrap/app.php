@@ -19,6 +19,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        // ── CORS (must be first) ─────────────────────────────────────────────
+        $middleware->prepend(\Illuminate\Http\Middleware\HandleCors::class);
+
         // ── Global API middleware stack ───────────────────────────────────────
         $middleware->api(prepend: [
             JsonResponseMiddleware::class,

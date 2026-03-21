@@ -47,6 +47,8 @@ final class Author extends Model
         'bio',
         'photo_path',
         'birth_date',
+        'death_date',
+        'directions',
         'nationality',
         'website',
         'metadata',
@@ -54,7 +56,9 @@ final class Author extends Model
 
     protected $casts = [
         'metadata'   => 'array',
-        'birth_date' => 'date',
+        'birth_date'  => 'date',
+        'death_date'  => 'date',
+        'directions'  => 'array',
     ];
 
     protected $hidden = ['tenant_id'];

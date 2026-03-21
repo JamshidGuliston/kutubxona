@@ -28,6 +28,8 @@ final class BookResource extends JsonResource
             'pages'           => $this->pages,
             'cover_image'     => $this->cover_url,
             'cover_thumbnail' => $this->thumbnail_url,
+            'cover_url'       => $this->cover_url,
+            'thumbnail_url'   => $this->thumbnail_url,
             'status'          => $this->status,
             'is_featured'     => $this->is_featured,
             'is_downloadable' => $this->is_downloadable,
