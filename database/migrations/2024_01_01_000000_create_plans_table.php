@@ -19,7 +19,7 @@ return new class extends Migration
             $table->decimal('price_yearly', 10, 2)->nullable();
             $table->unsignedInteger('max_users')->default(10);
             $table->unsignedInteger('max_books')->default(100);
-            $table->unsignedBigInteger('storage_quota')->default(1073741824); // 1GB in bytes
+            $table->unsignedInteger('storage_quota')->default(1024); // MB da (1GB = 1024MB)
             $table->json('features')->nullable();
             $table->boolean('is_active')->default(true);
             $table->unsignedSmallInteger('sort_order')->default(0);
@@ -35,7 +35,7 @@ return new class extends Migration
                 'price_yearly'  => 0,
                 'max_users'     => 5,
                 'max_books'     => 20,
-                'storage_quota' => 536870912, // 512MB
+                'storage_quota' => 512, // 512MB
                 'features'      => json_encode([
                     'audiobooks'  => false,
                     'reviews'     => true,
@@ -55,7 +55,7 @@ return new class extends Migration
                 'price_yearly'  => 290,
                 'max_users'     => 50,
                 'max_books'     => 500,
-                'storage_quota' => 10737418240, // 10GB
+                'storage_quota' => 10240, // 10GB
                 'features'      => json_encode([
                     'audiobooks'   => true,
                     'reviews'      => true,
@@ -75,7 +75,7 @@ return new class extends Migration
                 'price_yearly'  => 990,
                 'max_users'     => 500,
                 'max_books'     => 5000,
-                'storage_quota' => 107374182400, // 100GB
+                'storage_quota' => 102400, // 100GB
                 'features'      => json_encode([
                     'audiobooks'   => true,
                     'reviews'      => true,
@@ -97,7 +97,7 @@ return new class extends Migration
                 'price_yearly'  => 4990,
                 'max_users'     => 99999,
                 'max_books'     => 99999,
-                'storage_quota' => 1099511627776, // 1TB
+                'storage_quota' => 1048576, // 1TB
                 'features'      => json_encode([
                     'audiobooks'   => true,
                     'reviews'      => true,
