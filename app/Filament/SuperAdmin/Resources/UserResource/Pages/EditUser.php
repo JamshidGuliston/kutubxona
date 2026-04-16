@@ -18,6 +18,12 @@ class EditUser extends EditRecord
         return [DeleteAction::make()];
     }
 
+    protected function mutateFormDataBeforeSave(array $data): array
+    {
+        unset($data['roles']);
+        return $data;
+    }
+
     protected function afterSave(): void
     {
         $roles = $this->data['roles'] ?? [];

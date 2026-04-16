@@ -12,6 +12,12 @@ class CreateUser extends CreateRecord
 {
     protected static string $resource = UserResource::class;
 
+    protected function mutateFormDataBeforeCreate(array $data): array
+    {
+        unset($data['roles']);
+        return $data;
+    }
+
     protected function afterCreate(): void
     {
         $roles = $this->data['roles'] ?? [];
