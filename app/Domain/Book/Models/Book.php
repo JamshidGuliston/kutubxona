@@ -8,6 +8,8 @@ use App\Domain\Library\Models\Author;
 use App\Domain\Library\Models\Category;
 use App\Domain\Library\Models\Publisher;
 use App\Domain\Library\Models\Tag;
+use App\Domain\Localization\Contracts\HasTranslations as HasTranslationsContract;
+use App\Domain\Localization\Traits\HasTranslations;
 use App\Domain\Reading\Models\Bookmark;
 use App\Domain\Reading\Models\Highlight;
 use App\Domain\Reading\Models\ReadingProgress;
@@ -59,11 +61,15 @@ use Laravel\Scout\Searchable;
  * @property \Carbon\Carbon $updated_at
  * @property \Carbon\Carbon|null $deleted_at
  */
-final class Book extends Model
+final class Book extends Model implements HasTranslationsContract
 {
     use HasFactory;
+    use HasTranslations;
     use Searchable;
     use SoftDeletes;
+
+    public const TRANSLATION_MODEL = BookTranslation::class;
+    public const TRANSLATABLE_FIELDS = ['title', 'subtitle', 'description', 'slug', 'meta_title', 'meta_description'];
 
     protected $table = 'books';
 
