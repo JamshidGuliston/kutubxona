@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Domain\Library\Models;
 
 use App\Domain\Book\Models\Book;
+use App\Domain\Localization\Contracts\HasTranslations as HasTranslationsContract;
+use App\Domain\Localization\Traits\HasTranslations;
 use App\Domain\Tenant\Models\Tenant;
 use App\Infrastructure\Scopes\TenantScope;
 use App\Traits\HasTenantScope;
@@ -32,11 +34,15 @@ use Illuminate\Support\Str;
  * @property \Carbon\Carbon $updated_at
  * @property \Carbon\Carbon|null $deleted_at
  */
-final class Publisher extends Model
+final class Publisher extends Model implements HasTranslationsContract
 {
     use HasFactory;
     use HasTenantScope;
+    use HasTranslations;
     use SoftDeletes;
+
+    public const TRANSLATION_MODEL = PublisherTranslation::class;
+    public const TRANSLATABLE_FIELDS = ['name', 'description', 'slug'];
 
     protected $table = 'publishers';
 

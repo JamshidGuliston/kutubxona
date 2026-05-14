@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Domain\Library\Models;
 
 use App\Domain\Book\Models\Book;
+use App\Domain\Localization\Contracts\HasTranslations as HasTranslationsContract;
+use App\Domain\Localization\Traits\HasTranslations;
 use App\Domain\Tenant\Models\Tenant;
 use App\Infrastructure\Scopes\TenantScope;
 use App\Traits\HasTenantScope;
@@ -34,10 +36,14 @@ use Illuminate\Support\Str;
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  */
-final class Category extends Model
+final class Category extends Model implements HasTranslationsContract
 {
     use HasFactory;
     use HasTenantScope;
+    use HasTranslations;
+
+    public const TRANSLATION_MODEL = CategoryTranslation::class;
+    public const TRANSLATABLE_FIELDS = ['name', 'description', 'slug'];
 
     protected $table = 'categories';
 
