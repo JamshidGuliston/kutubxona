@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Tenant\Models;
 
 use App\Domain\Book\Models\Book;
+use App\Domain\Localization\Models\TenantLanguage;
 use App\Domain\User\Models\User;
 use App\Domain\Tenant\Enums\TenantStatus;
 use Illuminate\Database\Eloquent\Model;
@@ -121,6 +122,24 @@ final class Tenant extends Model
         );
     }
 
+    public function languages(): HasMany
+    {
+        return $this->hasMany(TenantLanguage::class, 'tenant_id')->orderBy('sort_order');
+    }
+
+    public function activeLanguages(): HasMany
+    {
+        return $this->hasMany(TenantLanguage::class, 'tenant_id')
+            ->where('is_active', true)
+            ->orderBy('sort_order');
+    }
+
+    public function defaultLanguage(): HasOne
+    {
+        return $this->hasOne(TenantLanguage::class, 'tenant_id')
+            ->where('is_default', true);
+    }
+
     // ─── Scopes ─────────────────────────────────────────────────────────────────
 
     public function scopeActive(Builder $query): Builder
@@ -235,5 +254,10 @@ final class Tenant extends Model
     public function getS3Prefix(): string
     {
         return "tenants/{$this->id}";
+    }
+
+    public function getDefaultLocaleAttribute(): string
+    {
+        return $this->defaultLanguage?->code ?? config('app.locale', 'uz');
     }
 }
