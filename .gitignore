@@ -1,23 +1,76 @@
-/.phpunit.cache
+# ─── Dependencies ────────────────────────────────────────────────────────────
 /node_modules
+/vendor
+
+# ─── Build artifacts ─────────────────────────────────────────────────────────
 /public/build
 /public/hot
 /public/storage
-/storage/*.key
-/vendor
+
+# ─── Environment & secrets ───────────────────────────────────────────────────
 .env
-.osp
 .env.backup
 .env.production
-.phpunit.result.cache
-Homestead.json
-Homestead.yaml
+.env.local
 auth.json
-npm-debug.log
-yarn-error.log
+/storage/*.key
+
+# ─── Runtime / Laravel-generated (regenerated on demand) ─────────────────────
+/bootstrap/cache/*
+!/bootstrap/cache/.gitignore
+
+/storage/framework/cache/*
+!/storage/framework/cache/.gitignore
+/storage/framework/sessions/*
+!/storage/framework/sessions/.gitignore
+/storage/framework/views/*
+!/storage/framework/views/.gitignore
+/storage/framework/testing/*
+!/storage/framework/testing/.gitignore
+
+/storage/logs/*
+!/storage/logs/.gitignore
+
+/storage/debugbar/*
+!/storage/debugbar/.gitignore
+
+/storage/app/livewire-tmp/*
+!/storage/app/livewire-tmp/.gitignore
+
+# ─── User-uploaded content (tenant data — never commit) ──────────────────────
+/public/uploads/*
+!/public/uploads/.gitkeep
+/storage/app/public/*
+!/storage/app/public/.gitkeep
+/storage/app/tenants/*
+!/storage/app/tenants/.gitkeep
+
+# ─── Composer (don't commit composer-setup.php or composer.phar) ─────────────
+/composer-setup.php
+/composer.phar
+
+# ─── Editor / IDE ────────────────────────────────────────────────────────────
 /.fleet
 /.idea
 /.vscode
+/.nova
+/.zed
+/.phpactor.json
+
+# ─── Test artifacts ──────────────────────────────────────────────────────────
+/.phpunit.cache
+/.phpunit.result.cache
+/storage/pail
+
+# ─── Misc dev ────────────────────────────────────────────────────────────────
+.osp
+Homestead.json
+Homestead.yaml
+npm-debug.log
+yarn-error.log
 /backend
 /frontend
 
+# ─── Anomalies (legacy files that shouldn't be committed) ────────────────────
+/cgi-bin
+'cover_image))])'
