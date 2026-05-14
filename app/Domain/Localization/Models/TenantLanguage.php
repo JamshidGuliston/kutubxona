@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Domain\Localization\Models;
 
+use App\Domain\Localization\Observers\TenantLanguageObserver;
 use App\Domain\Tenant\Models\Tenant;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -20,6 +22,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property bool $is_active
  * @property int $sort_order
  */
+#[ObservedBy([TenantLanguageObserver::class])]
 final class TenantLanguage extends Model
 {
     protected $table = 'tenant_languages';
