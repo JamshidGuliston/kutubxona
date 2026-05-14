@@ -42,10 +42,12 @@ final class TenantLanguageObserver
     public function saved(TenantLanguage $language): void
     {
         \Illuminate\Support\Facades\Cache::forget("tenant.{$language->tenant_id}.locales");
+        \Illuminate\Support\Facades\Cache::forget("tenant.{$language->tenant_id}.languages.public");
     }
 
     public function deleted(TenantLanguage $language): void
     {
         \Illuminate\Support\Facades\Cache::forget("tenant.{$language->tenant_id}.locales");
+        \Illuminate\Support\Facades\Cache::forget("tenant.{$language->tenant_id}.languages.public");
     }
 }

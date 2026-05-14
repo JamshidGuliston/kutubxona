@@ -6,6 +6,8 @@ use App\Interfaces\Http\Controllers\V1\Admin\TenantAdminController;
 use App\Interfaces\Http\Controllers\V1\AudioBook\AudioBookController;
 use App\Interfaces\Http\Controllers\V1\Auth\AuthController;
 use App\Interfaces\Http\Controllers\V1\Book\BookController;
+use App\Interfaces\Http\Controllers\V1\Localization\LanguageController;
+use App\Interfaces\Http\Controllers\V1\Localization\TranslationController;
 use App\Interfaces\Http\Controllers\V1\Reading\ReadingProgressController;
 use App\Interfaces\Http\Controllers\V1\SuperAdmin\TenantController as SuperAdminTenantController;
 use Illuminate\Support\Facades\Route;
@@ -121,6 +123,12 @@ Route::prefix('v1')->middleware(['tenant', 'locale', 'tenant.scope'])->group(fun
              ->name('tags.index');
         Route::get('tags/cloud', [\App\Interfaces\Http\Controllers\V1\Tag\TagController::class, 'cloud'])
              ->name('tags.cloud');
+
+        // Localization (public)
+        Route::get('/languages', [LanguageController::class, 'index'])
+             ->name('languages.index');
+        Route::get('/translations/{locale}', [TranslationController::class, 'show'])
+             ->name('translations.show');
     });
 
     // ─── Authenticated Routes ─────────────────────────────────────────────────
