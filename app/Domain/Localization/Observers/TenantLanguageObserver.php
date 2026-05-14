@@ -38,4 +38,14 @@ final class TenantLanguageObserver
             $nextDefault->update(['is_default' => true]);
         }
     }
+
+    public function saved(TenantLanguage $language): void
+    {
+        \Illuminate\Support\Facades\Cache::forget("tenant.{$language->tenant_id}.locales");
+    }
+
+    public function deleted(TenantLanguage $language): void
+    {
+        \Illuminate\Support\Facades\Cache::forget("tenant.{$language->tenant_id}.locales");
+    }
 }

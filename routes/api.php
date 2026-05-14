@@ -49,7 +49,7 @@ Route::get('/health', function () {
 | Versioned API Routes — All require tenant resolution
 |--------------------------------------------------------------------------
 */
-Route::prefix('v1')->middleware(['tenant', 'tenant.scope'])->group(function (): void {
+Route::prefix('v1')->middleware(['tenant', 'locale', 'tenant.scope'])->group(function (): void {
 
     // ─── Authentication ───────────────────────────────────────────────────────
     Route::prefix('auth')->group(function (): void {

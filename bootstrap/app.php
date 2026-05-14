@@ -6,6 +6,7 @@ use App\Exceptions\Handler;
 use App\Interfaces\Http\Middleware\ApiVersionMiddleware;
 use App\Interfaces\Http\Middleware\JsonResponseMiddleware;
 use App\Interfaces\Http\Middleware\RateLimitByTenant;
+use App\Interfaces\Http\Middleware\ResolveLocaleMiddleware;
 use App\Interfaces\Http\Middleware\TenantMiddleware;
 use App\Interfaces\Http\Middleware\TenantScopeMiddleware;
 use Illuminate\Foundation\Application;
@@ -36,11 +37,13 @@ return Application::configure(basePath: dirname(__DIR__))
             'rate.tenant'       => RateLimitByTenant::class,
             'json'              => JsonResponseMiddleware::class,
             'api.version'       => ApiVersionMiddleware::class,
+            'locale'            => ResolveLocaleMiddleware::class,
         ]);
 
         // ── Middleware groups ────────────────────────────────────────────────
         $middleware->appendToGroup('tenant-api', [
             TenantMiddleware::class,
+            ResolveLocaleMiddleware::class,
             TenantScopeMiddleware::class,
             RateLimitByTenant::class,
         ]);
