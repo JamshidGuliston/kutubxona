@@ -16,6 +16,7 @@ class CreateBook extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
+        $data = $this->extractTranslations($data);
         $data['tenant_id'] = auth()->user()->tenant_id;
         return $data;
     }

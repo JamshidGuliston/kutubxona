@@ -27,11 +27,16 @@ trait HandlesTranslations
     /** @var array<string, array<string, mixed>> */
     protected array $translationsData = [];
 
-    protected function mutateFormDataBeforeSave(array $data): array
+    protected function extractTranslations(array $data): array
     {
         $this->translationsData = $data['translations'] ?? [];
         unset($data['translations']);
         return $data;
+    }
+
+    protected function mutateFormDataBeforeSave(array $data): array
+    {
+        return $this->extractTranslations($data);
     }
 
     protected function mutateFormDataBeforeCreate(array $data): array
