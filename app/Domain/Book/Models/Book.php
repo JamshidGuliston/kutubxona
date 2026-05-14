@@ -78,13 +78,8 @@ final class Book extends Model implements HasTranslationsContract
         'author_id',
         'publisher_id',
         'category_id',
-        'title',
-        'slug',
-        'subtitle',
-        'description',
         'isbn',
         'isbn13',
-        'language',
         'published_year',
         'edition',
         'pages',
@@ -140,15 +135,6 @@ final class Book extends Model implements HasTranslationsContract
             }
             if (auth()->check() && empty($book->created_by)) {
                 $book->created_by = auth()->id();
-            }
-            if (empty($book->slug) && !empty($book->title)) {
-                $base = \Illuminate\Support\Str::slug($book->title);
-                $slug = $base;
-                $i = 1;
-                while (static::withoutGlobalScopes()->where('tenant_id', $book->tenant_id)->where('slug', $slug)->exists()) {
-                    $slug = $base . '-' . $i++;
-                }
-                $book->slug = $slug;
             }
         });
 
@@ -257,11 +243,6 @@ final class Book extends Model implements HasTranslationsContract
         return $query->where('is_downloadable', true);
     }
 
-    public function scopeByLanguage(Builder $query, string $language): Builder
-    {
-        return $query->where('language', $language);
-    }
-
     public function scopePopular(Builder $query): Builder
     {
         return $query->orderByDesc('download_count');
@@ -308,16 +289,19 @@ final class Book extends Model implements HasTranslationsContract
 
     public function toSearchableArray(): array
     {
+        $defaultLocale = $this->tenant?->default_locale ?? config('app.locale', 'uz');
+        $defaultTranslation = $this->translations->firstWhere('locale', $defaultLocale)
+            ?? $this->translations->first();
+
         return [
-            'id'            => $this->id,
-            'tenant_id'     => $this->tenant_id,
-            'title'         => $this->title,
-            'description'   => $this->description,
-            'author_name'   => $this->author?->name,
-            'publisher_name'=> $this->publisher?->name,
-            'language'      => $this->language,
-            'status'        => $this->status,
-            'tags'          => $this->tags->pluck('name')->toArray(),
+            'id'             => $this->id,
+            'tenant_id'      => $this->tenant_id,
+            'title'          => $defaultTranslation?->title,
+            'description'    => $defaultTranslation?->description,
+            'author_name'    => $this->author?->trans('name'),
+            'publisher_name' => $this->publisher?->trans('name'),
+            'status'         => $this->status,
+            'tags'           => $this->tags->map(fn ($t) => $t->trans('name'))->filter()->values()->all(),
         ];
     }
 

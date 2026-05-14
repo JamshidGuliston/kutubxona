@@ -123,16 +123,13 @@ class BookResource extends Resource
 
             Section::make('Qo\'shimcha ma\'lumotlar')->schema([
                 Grid::make(2)->schema([
-                    TextInput::make('language')->label('Til')->default('uz')->maxLength(10),
                     TextInput::make('isbn')->label('ISBN')->maxLength(20),
-                ]),
-                Grid::make(2)->schema([
                     TextInput::make('pages')->label('Sahifalar soni')->numeric()->minValue(1),
-                    DatePicker::make('published_at')
-                        ->label('Nashr sanasi')
-                        ->displayFormat('d.m.Y')
-                        ->native(false),
                 ]),
+                DatePicker::make('published_at')
+                    ->label('Nashr sanasi')
+                    ->displayFormat('d.m.Y')
+                    ->native(false),
             ]),
 
             Section::make('Sozlamalar')->columns(3)->schema([

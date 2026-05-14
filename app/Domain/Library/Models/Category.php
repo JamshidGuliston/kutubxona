@@ -50,9 +50,6 @@ final class Category extends Model implements HasTranslationsContract
     protected $fillable = [
         'tenant_id',
         'parent_id',
-        'name',
-        'slug',
-        'description',
         'icon',
         'color',
         'sort_order',
@@ -76,9 +73,6 @@ final class Category extends Model implements HasTranslationsContract
     protected static function booted(): void
     {
         static::creating(function (self $category): void {
-            if (empty($category->slug)) {
-                $category->slug = static::generateUniqueSlug($category->name, $category->tenant_id);
-            }
             $category->depth = $category->parent_id
                 ? (static::withoutGlobalScope(TenantScope::class)
                     ->find($category->parent_id)?->depth ?? 0) + 1

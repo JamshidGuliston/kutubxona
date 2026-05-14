@@ -48,9 +48,6 @@ final class Author extends Model implements HasTranslationsContract
 
     protected $fillable = [
         'tenant_id',
-        'name',
-        'slug',
-        'bio',
         'photo_path',
         'birth_date',
         'death_date',
@@ -71,11 +68,6 @@ final class Author extends Model implements HasTranslationsContract
 
     protected static function booted(): void
     {
-        static::creating(function (self $author): void {
-            if (empty($author->slug)) {
-                $author->slug = static::generateUniqueSlug($author->name, $author->tenant_id);
-            }
-        });
     }
 
     // ─── Relationships ──────────────────────────────────────────────────────────

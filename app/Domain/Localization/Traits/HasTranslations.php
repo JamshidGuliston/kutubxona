@@ -55,13 +55,6 @@ trait HasTranslations
             }
         }
 
-        // Phase A fallback: if a real column with this name exists on the
-        // parent model and is non-empty, return it. This keeps old code working
-        // while migrations are still in flight.
-        if (array_key_exists($field, $this->attributes) && filled($this->attributes[$field])) {
-            return (string) $this->attributes[$field];
-        }
-
         return null;
     }
 

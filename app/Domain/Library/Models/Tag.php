@@ -40,8 +40,6 @@ final class Tag extends Model implements HasTranslationsContract
 
     protected $fillable = [
         'tenant_id',
-        'name',
-        'slug',
         'color',
         'usage_count',
     ];
@@ -54,11 +52,6 @@ final class Tag extends Model implements HasTranslationsContract
 
     protected static function booted(): void
     {
-        static::creating(function (self $tag): void {
-            if (empty($tag->slug)) {
-                $tag->slug = static::generateUniqueSlug($tag->name, $tag->tenant_id);
-            }
-        });
     }
 
     // ─── Relationships ──────────────────────────────────────────────────────────

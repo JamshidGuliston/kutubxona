@@ -48,9 +48,6 @@ final class Publisher extends Model implements HasTranslationsContract
 
     protected $fillable = [
         'tenant_id',
-        'name',
-        'slug',
-        'description',
         'website',
         'logo_path',
         'founded_year',
@@ -67,11 +64,6 @@ final class Publisher extends Model implements HasTranslationsContract
 
     protected static function booted(): void
     {
-        static::creating(function (self $publisher): void {
-            if (empty($publisher->slug)) {
-                $publisher->slug = static::generateUniqueSlug($publisher->name, $publisher->tenant_id);
-            }
-        });
     }
 
     // ─── Relationships ──────────────────────────────────────────────────────────
