@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Admin\Resources;
 
 use App\Domain\Library\Models\Author;
+use App\Domain\Localization\Models\TenantLanguage;
 use App\Filament\Admin\Resources\AuthorResource\Pages;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
@@ -12,6 +13,8 @@ use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\DatePicker;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
@@ -70,16 +73,7 @@ class AuthorResource extends Resource
     {
         return $schema->components([
             Section::make('Asosiy ma\'lumotlar')->schema([
-                TextInput::make('name')
-                    ->label('To\'liq ism')
-                    ->required()
-                    ->maxLength(255)
-                    ->columnSpanFull(),
-
-                Textarea::make('bio')
-                    ->label('Biografiya')
-                    ->rows(4)
-                    ->columnSpanFull(),
+                static::translationTabs()->columnSpanFull(),
             ]),
 
             Section::make('Yo\'nalishlar')
@@ -127,7 +121,13 @@ class AuthorResource extends Resource
             ->columns([
                 TextColumn::make('name')
                     ->label('Ism')
-                    ->searchable()
+                    ->getStateUsing(fn ($r) => $r->name)
+                    ->searchable(query: function ($query, string $search): void {
+                        $query->where(function ($q) use ($search): void {
+                            $q->where('name', 'ilike', "%{$search}%")
+                              ->orWhereHas('translations', fn ($t) => $t->where('name', 'ilike', "%{$search}%"));
+                        });
+                    })
                     ->sortable(),
 
                 TextColumn::make('directions')
@@ -176,6 +176,51 @@ class AuthorResource extends Resource
             'index'  => Pages\ListAuthors::route('/'),
             'create' => Pages\CreateAuthor::route('/create'),
             'edit'   => Pages\EditAuthor::route('/{record}/edit'),
+        ];
+    }
+
+    protected static function translationTabs(): Tabs
+    {
+        $tenantId = auth()->user()?->tenant_id;
+        $languages = TenantLanguage::query()
+            ->where('tenant_id', $tenantId)
+            ->where('is_active', true)
+            ->orderBy('sort_order')
+            ->get();
+
+        if ($languages->isEmpty()) {
+            $fallbackCode = config('app.locale', 'uz');
+            return Tabs::make('Tarjimalar')->tabs([
+                Tab::make($fallbackCode)
+                    ->icon('heroicon-o-language')
+                    ->schema(static::translationFieldsFor($fallbackCode, true)),
+            ])->columnSpanFull();
+        }
+
+        return Tabs::make('Tarjimalar')->tabs(
+            $languages->map(fn (TenantLanguage $lang) => Tab::make($lang->native_name)
+                ->icon('heroicon-o-language')
+                ->schema(static::translationFieldsFor($lang->code, $lang->is_default))
+            )->all()
+        )->columnSpanFull();
+    }
+
+    protected static function translationFieldsFor(string $locale, bool $isDefault): array
+    {
+        return [
+            TextInput::make("translations.{$locale}.name")
+                ->label('To\'liq ism')
+                ->required($isDefault)
+                ->maxLength(255)
+                ->columnSpanFull(),
+            Textarea::make("translations.{$locale}.bio")
+                ->label('Biografiya')
+                ->rows(4)
+                ->columnSpanFull(),
+            TextInput::make("translations.{$locale}.slug")
+                ->label('URL slug')
+                ->helperText("Bo'sh qoldirsangiz avtomatik yaratiladi")
+                ->maxLength(255),
         ];
     }
 }
