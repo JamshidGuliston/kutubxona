@@ -120,35 +120,7 @@ trait HandlesTranslations
                 ['locale' => $locale],
                 $payload
             );
-
-            // Phase B dual-write: for default locale, also sync parent columns
-            if ($locale === $defaultLocale) {
-                $parentPayload = array_intersect_key($payload, array_flip($translatableFields));
-                if (! empty($parentPayload)) {
-                    $this->syncParentColumns($parentPayload);
-                }
-            }
         }
-    }
-
-    /**
-     * Write translatable fields back to the parent table for Phase B dual-write.
-     * Skips fields that aren't actual columns on the parent model.
-     */
-    private function syncParentColumns(array $payload): void
-    {
-        /** @var Model $record */
-        $record = $this->record;
-        $fillable = $record->getFillable();
-        $columns = array_keys($payload);
-        $writable = array_filter($columns, fn ($c) => in_array($c, $fillable, true));
-
-        if (empty($writable)) {
-            return;
-        }
-
-        $updates = array_intersect_key($payload, array_flip($writable));
-        $record->forceFill($updates)->saveQuietly();
     }
 
     private function resolveDefaultLocale(): string
