@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Admin\Resources\BookResource\Pages;
 
 use App\Filament\Admin\Resources\BookResource;
+use App\Filament\Concerns\HandlesTranslations;
 use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
@@ -12,6 +13,8 @@ use Illuminate\Support\Facades\Storage;
 
 class EditBook extends EditRecord
 {
+    use HandlesTranslations;
+
     protected static string $resource = BookResource::class;
 
     protected function getHeaderActions(): array
