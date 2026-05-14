@@ -54,14 +54,28 @@ class BookResource extends Resource
                 static::translationTabs()->columnSpanFull(),
                 Grid::make(2)->schema([
                     Select::make('author_id')->label('Muallif')
-                        ->relationship('author', 'name')->searchable()->preload()
-                        ->createOptionForm([TextInput::make('name')->label('Ism')->required()]),
+                        ->relationship('author', 'id')
+                        ->getOptionLabelFromRecordUsing(fn (\App\Domain\Library\Models\Author $r) => $r->trans('name'))
+                        ->getSearchResultsUsing(fn (string $search) => \App\Domain\Library\Models\Author::query()
+                            ->whereHas('translations', fn ($q) => $q->where('name', 'ilike', "%{$search}%"))
+                            ->limit(50)
+                            ->get()
+                            ->mapWithKeys(fn ($a) => [$a->id => $a->trans('name')])
+                            ->toArray())
+                        ->searchable()
+                        ->preload(),
                     Select::make('publisher_id')->label('Nashriyot')
-                        ->relationship('publisher', 'name')->searchable()->preload(),
+                        ->relationship('publisher', 'id')
+                        ->getOptionLabelFromRecordUsing(fn (\App\Domain\Library\Models\Publisher $r) => $r->trans('name'))
+                        ->searchable()
+                        ->preload(),
                 ]),
                 Grid::make(2)->schema([
                     Select::make('category_id')->label('Kategoriya')
-                        ->relationship('category', 'name')->searchable()->preload(),
+                        ->relationship('category', 'id')
+                        ->getOptionLabelFromRecordUsing(fn (\App\Domain\Library\Models\Category $r) => $r->trans('name'))
+                        ->searchable()
+                        ->preload(),
                     Select::make('status')->label('Holat')
                         ->options([
                             'draft'      => 'Qoralama',
@@ -153,16 +167,12 @@ class BookResource extends Resource
 
                 TextColumn::make('title')
                     ->label('Sarlavha')
-                    ->getStateUsing(fn (Book $r) => $r->title)
+                    ->getStateUsing(fn (Book $record): ?string => $record->trans('title'))
                     ->searchable(query: function ($query, string $search): void {
-                        $query->where(function ($q) use ($search): void {
-                            $q->where('title', 'ilike', "%{$search}%")
-                              ->orWhereHas('translations', fn ($t) => $t->where('title', 'ilike', "%{$search}%"));
-                        });
+                        $query->whereHas('translations', fn ($t) => $t->where('title', 'ilike', "%{$search}%"));
                     })
-                    ->sortable()
                     ->limit(40)
-                    ->description(fn (Book $r): string => $r->author?->name ?? ''),
+                    ->description(fn (Book $record): string => $record->author?->trans('name') ?? ''),
 
                 TextColumn::make('status')
                     ->label('Holat')

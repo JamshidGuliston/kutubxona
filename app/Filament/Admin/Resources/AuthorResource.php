@@ -121,14 +121,10 @@ class AuthorResource extends Resource
             ->columns([
                 TextColumn::make('name')
                     ->label('Ism')
-                    ->getStateUsing(fn ($r) => $r->name)
+                    ->getStateUsing(fn (\App\Domain\Library\Models\Author $record): ?string => $record->trans('name'))
                     ->searchable(query: function ($query, string $search): void {
-                        $query->where(function ($q) use ($search): void {
-                            $q->where('name', 'ilike', "%{$search}%")
-                              ->orWhereHas('translations', fn ($t) => $t->where('name', 'ilike', "%{$search}%"));
-                        });
-                    })
-                    ->sortable(),
+                        $query->whereHas('translations', fn ($t) => $t->where('name', 'ilike', "%{$search}%"));
+                    }),
 
                 TextColumn::make('directions')
                     ->label('Yo\'nalishlar')
