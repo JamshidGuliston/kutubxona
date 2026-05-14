@@ -261,17 +261,26 @@ class BookResource extends Resource
             TextInput::make("translations.{$locale}.title")
                 ->label('Sarlavha')
                 ->required($isDefault)
-                ->maxLength(500),
+                ->maxLength(500)
+                ->columnSpanFull(),
             TextInput::make("translations.{$locale}.subtitle")
                 ->label('Kichik sarlavha')
-                ->maxLength(500),
+                ->maxLength(500)
+                ->columnSpanFull(),
             Textarea::make("translations.{$locale}.description")
                 ->label('Tavsif')
-                ->rows(4),
+                ->rows(4)
+                ->columnSpanFull(),
             TextInput::make("translations.{$locale}.slug")
                 ->label('URL slug')
                 ->helperText("Bo'sh qoldirsangiz avtomatik yaratiladi")
                 ->maxLength(500),
+            TextInput::make("translations.{$locale}.meta_title")
+                ->label('SEO sarlavha')
+                ->maxLength(255),
+            Textarea::make("translations.{$locale}.meta_description")
+                ->label('SEO tavsif')
+                ->rows(2),
         ];
     }
 }
