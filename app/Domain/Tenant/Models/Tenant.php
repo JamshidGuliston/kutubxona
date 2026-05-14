@@ -256,8 +256,10 @@ final class Tenant extends Model
         return "tenants/{$this->id}";
     }
 
-    public function getDefaultLocaleAttribute(): string
+    protected function defaultLocale(): Attribute
     {
-        return $this->defaultLanguage?->code ?? config('app.locale', 'uz');
+        return Attribute::make(
+            get: fn (): string => $this->defaultLanguage?->code ?? config('app.locale', 'uz')
+        );
     }
 }
