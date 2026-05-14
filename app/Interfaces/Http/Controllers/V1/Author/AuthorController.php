@@ -6,6 +6,7 @@ namespace App\Interfaces\Http\Controllers\V1\Author;
 
 use App\Domain\Library\Models\Author;
 use App\Interfaces\Http\Controllers\BaseController;
+use App\Interfaces\Http\Resources\Library\AuthorResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -29,7 +30,7 @@ final class AuthorController extends BaseController
             'per_page'    => ['nullable', 'integer', 'min:1', 'max:100'],
         ]);
 
-        $query = Author::withCount('books');
+        $query = Author::with('translations')->withCount('books');
 
         if (!empty($validated['search'])) {
             $query->where('name', 'like', '%' . $validated['search'] . '%');
@@ -46,7 +47,7 @@ final class AuthorController extends BaseController
         $authors = $query->paginate($validated['per_page'] ?? 20);
 
         return $this->paginatedResponse(
-            data: $authors->items(),
+            data: AuthorResource::collection($authors->items()),
             paginator: $authors,
             message: 'Authors retrieved successfully'
         );
@@ -57,10 +58,10 @@ final class AuthorController extends BaseController
      */
     public function show(Author $author): JsonResponse
     {
-        $author->load(['books' => fn ($q) => $q->published()->limit(10)]);
+        $author->load(['books' => fn ($q) => $q->published()->limit(10), 'translations']);
 
         return $this->successResponse(
-            data: $author,
+            data: new AuthorResource($author),
             message: 'Author retrieved successfully'
         );
     }

@@ -66,8 +66,12 @@ final class BookController extends BaseController
             $paginator = $this->bookService->getBooks($filters, $page, $perPage);
         }
 
+        // Eager-load translations for locale-aware fields
+        $items = $paginator->items();
+        collect($items)->each(fn ($item) => $item->load('translations'));
+
         return $this->paginatedResponse(
-            data: BookResource::collection($paginator->items()),
+            data: BookResource::collection($items),
             paginator: $paginator,
             message: 'Books retrieved successfully'
         );
@@ -90,6 +94,9 @@ final class BookController extends BaseController
         if (!$book) {
             return $this->errorResponse('Book not found.', 404);
         }
+
+        // Eager-load translations for locale-aware fields
+        $book->load('translations');
 
         // Append user-specific data if authenticated
         $userProgress = null;
@@ -290,6 +297,9 @@ final class BookController extends BaseController
     {
         $books = $this->bookService->getPopularBooks(20);
 
+        // Eager-load translations for locale-aware fields
+        collect($books)->each(fn ($book) => $book->load('translations'));
+
         return $this->successResponse(
             data: BookResource::collection($books),
             message: 'Popular books retrieved'
@@ -308,6 +318,9 @@ final class BookController extends BaseController
     {
         $books = $this->bookService->getFeaturedBooks(10);
 
+        // Eager-load translations for locale-aware fields
+        collect($books)->each(fn ($book) => $book->load('translations'));
+
         return $this->successResponse(
             data: BookResource::collection($books),
             message: 'Featured books retrieved'
@@ -325,6 +338,9 @@ final class BookController extends BaseController
     public function newArrivals(): JsonResponse
     {
         $books = $this->bookService->getNewArrivals(20);
+
+        // Eager-load translations for locale-aware fields
+        collect($books)->each(fn ($book) => $book->load('translations'));
 
         return $this->successResponse(
             data: BookResource::collection($books),

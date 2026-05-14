@@ -16,10 +16,10 @@ final class BookResource extends JsonResource
     {
         return [
             'id'              => $this->id,
-            'title'           => $this->title,
-            'slug'            => $this->slug,
-            'subtitle'        => $this->subtitle,
-            'description'     => $this->description,
+            'title'           => $this->trans('title'),
+            'slug'            => $this->trans('slug'),
+            'subtitle'        => $this->trans('subtitle'),
+            'description'     => $this->trans('description'),
             'isbn'            => $this->isbn,
             'isbn13'          => $this->isbn13,
             'language'        => $this->language,
@@ -43,21 +43,21 @@ final class BookResource extends JsonResource
             // Relationships (eager loaded)
             'author' => $this->whenLoaded('author', fn () => [
                 'id'   => $this->author->id,
-                'name' => $this->author->name,
-                'slug' => $this->author->slug,
+                'name' => $this->author->trans('name'),
+                'slug' => $this->author->trans('slug'),
             ]),
 
             'publisher' => $this->whenLoaded('publisher', fn () => [
                 'id'   => $this->publisher->id,
-                'name' => $this->publisher->name,
-                'slug' => $this->publisher->slug,
+                'name' => $this->publisher->trans('name'),
+                'slug' => $this->publisher->trans('slug'),
             ]),
 
             'categories' => $this->whenLoaded('categories', fn () =>
                 $this->categories->map(fn ($c) => [
                     'id'   => $c->id,
-                    'name' => $c->name,
-                    'slug' => $c->slug,
+                    'name' => $c->trans('name'),
+                    'slug' => $c->trans('slug'),
                 ])
             ),
 
@@ -91,6 +91,17 @@ final class BookResource extends JsonResource
             $this->mergeWhen(isset($this->additional['is_favorited']), [
                 'is_favorited' => $this->additional['is_favorited'] ?? false,
             ]),
+
+            // Translations (opt-in via with_translations query param)
+            'translations' => $this->when(
+                $request->boolean('with_translations'),
+                fn () => $this->translations->keyBy('locale')->map(fn ($t) => [
+                    'title'       => $t->title,
+                    'subtitle'    => $t->subtitle,
+                    'description' => $t->description,
+                    'slug'        => $t->slug,
+                ])
+            ),
         ];
     }
 }

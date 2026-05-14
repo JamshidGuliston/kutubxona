@@ -6,6 +6,7 @@ namespace App\Interfaces\Http\Controllers\V1\Publisher;
 
 use App\Domain\Library\Models\Publisher;
 use App\Interfaces\Http\Controllers\BaseController;
+use App\Interfaces\Http\Resources\Library\PublisherResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -17,7 +18,8 @@ final class PublisherController extends BaseController
 {
     public function index(Request $request): JsonResponse
     {
-        $publishers = Publisher::withCount('books')
+        $publishers = Publisher::with('translations')
+            ->withCount('books')
             ->when(
                 $request->filled('search'),
                 fn ($q) => $q->where('name', 'like', '%' . $request->search . '%')
@@ -26,7 +28,7 @@ final class PublisherController extends BaseController
             ->paginate($request->integer('per_page', 20));
 
         return $this->paginatedResponse(
-            data: $publishers->items(),
+            data: PublisherResource::collection($publishers->items()),
             paginator: $publishers,
             message: 'Publishers retrieved successfully'
         );
@@ -34,10 +36,10 @@ final class PublisherController extends BaseController
 
     public function show(Publisher $publisher): JsonResponse
     {
-        $publisher->loadCount('books');
+        $publisher->load('translations')->loadCount('books');
 
         return $this->successResponse(
-            data: $publisher,
+            data: new PublisherResource($publisher),
             message: 'Publisher retrieved successfully'
         );
     }

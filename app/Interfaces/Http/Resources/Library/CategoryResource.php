@@ -16,9 +16,9 @@ final class CategoryResource extends JsonResource
     {
         return [
             'id'          => $this->id,
-            'name'        => $this->name,
-            'slug'        => $this->slug,
-            'description' => $this->description,
+            'name'        => $this->trans('name'),
+            'slug'        => $this->trans('slug'),
+            'description' => $this->trans('description'),
             'icon'        => $this->icon,
             'color'       => $this->color,
             'sort_order'  => $this->sort_order,
@@ -28,16 +28,26 @@ final class CategoryResource extends JsonResource
 
             'parent' => $this->whenLoaded('parent', fn () => [
                 'id'   => $this->parent->id,
-                'name' => $this->parent->name,
-                'slug' => $this->parent->slug,
+                'name' => $this->parent->trans('name'),
+                'slug' => $this->parent->trans('slug'),
             ]),
 
             'children' => $this->whenLoaded('children', fn () =>
                 $this->children->map(fn ($child) => [
                     'id'   => $child->id,
-                    'name' => $child->name,
-                    'slug' => $child->slug,
+                    'name' => $child->trans('name'),
+                    'slug' => $child->trans('slug'),
                     'icon' => $child->icon,
+                ])
+            ),
+
+            // Translations (opt-in via with_translations query param)
+            'translations' => $this->when(
+                $request->boolean('with_translations'),
+                fn () => $this->translations->keyBy('locale')->map(fn ($t) => [
+                    'name'        => $t->name,
+                    'description' => $t->description,
+                    'slug'        => $t->slug,
                 ])
             ),
         ];

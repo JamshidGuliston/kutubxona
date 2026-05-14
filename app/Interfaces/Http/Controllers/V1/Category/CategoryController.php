@@ -6,6 +6,7 @@ namespace App\Interfaces\Http\Controllers\V1\Category;
 
 use App\Domain\Library\Models\Category;
 use App\Interfaces\Http\Controllers\BaseController;
+use App\Interfaces\Http\Resources\Library\CategoryResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -17,29 +18,33 @@ final class CategoryController extends BaseController
 {
     public function index(Request $request): JsonResponse
     {
-        $categories = Category::withCount('books')
+        $categories = Category::with('translations')
+            ->withCount('books')
             ->when(
                 $request->filled('parent_id'),
                 fn ($q) => $q->where('parent_id', $request->parent_id),
                 fn ($q) => $q->whereNull('parent_id')
             )
-            ->when($request->boolean('with_children'), fn ($q) => $q->with('children'))
+            ->when(
+                $request->boolean('with_children'),
+                fn ($q) => $q->with(['children' => fn ($q) => $q->with('translations')])
+            )
             ->orderBy('sort_order')
             ->orderBy('name')
             ->get();
 
         return $this->successResponse(
-            data: $categories,
+            data: CategoryResource::collection($categories),
             message: 'Categories retrieved successfully'
         );
     }
 
     public function show(Category $category): JsonResponse
     {
-        $category->load(['children', 'parent'])->loadCount('books');
+        $category->load(['children' => fn ($q) => $q->with('translations'), 'parent' => fn ($q) => $q->with('translations'), 'translations'])->loadCount('books');
 
         return $this->successResponse(
-            data: $category,
+            data: new CategoryResource($category),
             message: 'Category retrieved successfully'
         );
     }
