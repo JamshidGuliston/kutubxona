@@ -149,6 +149,13 @@ class NewsResource extends Resource
         ];
     }
 
+    public static function getRelations(): array
+    {
+        return [
+            \App\Filament\Admin\Resources\NewsResource\RelationManagers\CommentsRelationManager::class,
+        ];
+    }
+
     protected static function translationTabs(): Tabs
     {
         $tenantId = auth()->user()?->tenant_id;
