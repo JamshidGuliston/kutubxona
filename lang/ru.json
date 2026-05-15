@@ -25,5 +25,20 @@
   "common.error": "Произошла ошибка",
   "common.retry": "Повторить",
   "common.no_results": "Ничего не найдено",
-  "common.view_all": "Смотреть все"
+  "common.view_all": "Смотреть все",
+  "news.title": "Новости",
+  "news.view_all": "Все новости",
+  "news.read_more": "Читать далее",
+  "news.published_at": "Дата публикации",
+  "news.author": "Автор",
+  "news.like": "Нравится",
+  "news.comment": "Комментарий",
+  "news.comment.placeholder": "Напишите комментарий...",
+  "news.comment.submit": "Отправить",
+  "news.comment.moderation": "Комментарий отправлен на модерацию",
+  "news.comment.login_required": "Войдите чтобы комментировать",
+  "news.no_results": "Пока новостей нет",
+  "news.related": "Похожие новости",
+  "news.reply": "Ответить",
+  "news.load_more": "Загрузить ещё"
 }

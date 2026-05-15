@@ -25,5 +25,20 @@
   "common.error": "Xatolik yuz berdi",
   "common.retry": "Qaytadan urinish",
   "common.no_results": "Natijalar topilmadi",
-  "common.view_all": "Barchasini ko'rish"
+  "common.view_all": "Barchasini ko'rish",
+  "news.title": "Yangiliklar",
+  "news.view_all": "Barcha yangiliklar",
+  "news.read_more": "Batafsil o'qish",
+  "news.published_at": "Nashr sanasi",
+  "news.author": "Muallif",
+  "news.like": "Yoqdi",
+  "news.comment": "Sharh",
+  "news.comment.placeholder": "Sharhingizni yozing...",
+  "news.comment.submit": "Yuborish",
+  "news.comment.moderation": "Sharhingiz moderatsiyaga yuborildi",
+  "news.comment.login_required": "Sharh yozish uchun tizimga kiring",
+  "news.no_results": "Hozircha yangiliklar yo'q",
+  "news.related": "O'xshash yangiliklar",
+  "news.reply": "Javob berish",
+  "news.load_more": "Ko'proq yuklash"
 }

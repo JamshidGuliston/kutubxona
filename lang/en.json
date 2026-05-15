@@ -25,5 +25,20 @@
   "common.error": "An error occurred",
   "common.retry": "Retry",
   "common.no_results": "No results found",
-  "common.view_all": "View all"
+  "common.view_all": "View all",
+  "news.title": "News",
+  "news.view_all": "View all",
+  "news.read_more": "Read more",
+  "news.published_at": "Published",
+  "news.author": "Author",
+  "news.like": "Like",
+  "news.comment": "Comment",
+  "news.comment.placeholder": "Write a comment...",
+  "news.comment.submit": "Submit",
+  "news.comment.moderation": "Your comment is pending review",
+  "news.comment.login_required": "Sign in to comment",
+  "news.no_results": "No news yet",
+  "news.related": "Related news",
+  "news.reply": "Reply",
+  "news.load_more": "Load more"
 }
