@@ -129,6 +129,20 @@ Route::prefix('v1')->middleware(['tenant', 'locale', 'tenant.scope'])->group(fun
              ->name('languages.index');
         Route::get('/translations/{locale}', [TranslationController::class, 'show'])
              ->name('translations.show');
+
+        // News categories
+        Route::get('/news-categories', [\App\Interfaces\Http\Controllers\V1\News\NewsCategoryController::class, 'index'])
+             ->name('news-categories.index');
+
+        // News (public)
+        Route::prefix('news')->group(function (): void {
+            Route::get('/', [\App\Interfaces\Http\Controllers\V1\News\NewsController::class, 'index'])->name('news.index');
+            Route::get('/featured', [\App\Interfaces\Http\Controllers\V1\News\NewsController::class, 'featured'])->name('news.featured');
+            Route::get('/latest', [\App\Interfaces\Http\Controllers\V1\News\NewsController::class, 'latest'])->name('news.latest');
+            Route::get('/{slug}', [\App\Interfaces\Http\Controllers\V1\News\NewsController::class, 'show'])->name('news.show');
+            Route::get('/{slug}/related', [\App\Interfaces\Http\Controllers\V1\News\NewsController::class, 'related'])->name('news.related');
+            Route::get('/{slug}/comments', [\App\Interfaces\Http\Controllers\V1\News\NewsCommentController::class, 'index'])->name('news.comments.index');
+        });
     });
 
     // ─── Authenticated Routes ─────────────────────────────────────────────────
@@ -214,6 +228,16 @@ Route::prefix('v1')->middleware(['tenant', 'locale', 'tenant.scope'])->group(fun
             Route::post('/', [\App\Interfaces\Http\Controllers\V1\Tag\TagController::class, 'store']);
             Route::put('/{tag}', [\App\Interfaces\Http\Controllers\V1\Tag\TagController::class, 'update']);
             Route::delete('/{tag}', [\App\Interfaces\Http\Controllers\V1\Tag\TagController::class, 'destroy']);
+        });
+
+        // News (authenticated actions)
+        Route::prefix('news')->group(function (): void {
+            Route::post('/{slug}/like', [\App\Interfaces\Http\Controllers\V1\News\NewsLikeController::class, 'toggle'])
+                 ->name('news.like.toggle');
+            Route::post('/{slug}/comments', [\App\Interfaces\Http\Controllers\V1\News\NewsCommentController::class, 'store'])
+                 ->name('news.comments.store');
+            Route::delete('/comments/{id}', [\App\Interfaces\Http\Controllers\V1\News\NewsCommentController::class, 'destroy'])
+                 ->name('news.comments.destroy');
         });
 
         // Reading progress
