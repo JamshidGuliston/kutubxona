@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace App\Domain\News\Models;
 
+use App\Domain\News\Observers\NewsLikeObserver;
 use App\Domain\Tenant\Models\Tenant;
 use App\Domain\User\Models\User;
 use App\Infrastructure\Scopes\TenantScope;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+#[ObservedBy([NewsLikeObserver::class])]
 final class NewsLike extends Model
 {
     protected $table = 'news_likes';

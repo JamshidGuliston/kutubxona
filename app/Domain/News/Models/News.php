@@ -7,9 +7,11 @@ namespace App\Domain\News\Models;
 use App\Domain\Localization\Contracts\HasTranslations as HasTranslationsContract;
 use App\Domain\Localization\Traits\HasTranslations;
 use App\Domain\News\Enums\NewsStatus;
+use App\Domain\News\Observers\NewsObserver;
 use App\Domain\Tenant\Models\Tenant;
 use App\Domain\User\Models\User;
 use App\Infrastructure\Scopes\TenantScope;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -33,6 +35,7 @@ use Illuminate\Support\Facades\Storage;
  * @property int $comment_count
  * @property \Carbon\Carbon|null $published_at
  */
+#[ObservedBy([NewsObserver::class])]
 final class News extends Model implements HasTranslationsContract
 {
     use HasFactory;
