@@ -1,10 +1,13 @@
 {
   "home": "Bosh sahifa",
+  "home.new_arrivals": "Yangi qo'shilganlar",
+  "home.bestsellers": "Hafta bestsellerlari",
   "catalog": "Katalog",
   "audio_books": "Audio kitoblar",
   "news": "Yangiliklar",
   "events": "Tadbirlar",
   "about": "Biz haqimizda",
+  "profile": "Profil",
   "login": "Kirish",
   "logout": "Chiqish",
   "register": "Ro'yxatdan o'tish",
@@ -21,5 +24,6 @@
   "common.loading": "Yuklanmoqda...",
   "common.error": "Xatolik yuz berdi",
   "common.retry": "Qaytadan urinish",
-  "common.no_results": "Natijalar topilmadi"
+  "common.no_results": "Natijalar topilmadi",
+  "common.view_all": "Barchasini ko'rish"
 }

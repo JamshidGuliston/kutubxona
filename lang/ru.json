@@ -1,10 +1,13 @@
 {
   "home": "Главная",
+  "home.new_arrivals": "Новые поступления",
+  "home.bestsellers": "Бестселлеры недели",
   "catalog": "Каталог",
   "audio_books": "Аудиокниги",
   "news": "Новости",
   "events": "Мероприятия",
   "about": "О нас",
+  "profile": "Профиль",
   "login": "Войти",
   "logout": "Выйти",
   "register": "Регистрация",
@@ -21,5 +24,6 @@
   "common.loading": "Загрузка...",
   "common.error": "Произошла ошибка",
   "common.retry": "Повторить",
-  "common.no_results": "Ничего не найдено"
+  "common.no_results": "Ничего не найдено",
+  "common.view_all": "Смотреть все"
 }
