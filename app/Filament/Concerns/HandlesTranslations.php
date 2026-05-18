@@ -116,6 +116,10 @@ trait HandlesTranslations
                 array_flip($translatableFields)
             );
 
+            // Inject tenant_id explicitly — translation models read it from
+            // app('tenant'), which is only bound for API routes (not Filament admin).
+            $payload['tenant_id'] = $this->record->tenant_id;
+
             $this->record->translations()->updateOrCreate(
                 ['locale' => $locale],
                 $payload
