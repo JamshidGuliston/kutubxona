@@ -39,7 +39,7 @@ class NewsCategoryResource extends Resource
             Select::make('parent_id')
                 ->label('Yuqori kategoriya')
                 ->relationship('parent', 'id')
-                ->getOptionLabelFromRecordUsing(fn (NewsCategory $r) => $r->trans('name'))
+                ->getOptionLabelFromRecordUsing(fn (NewsCategory $r): string => $r->trans('name') ?? "#{$r->id}")
                 ->searchable()
                 ->preload()
                 ->nullable(),
