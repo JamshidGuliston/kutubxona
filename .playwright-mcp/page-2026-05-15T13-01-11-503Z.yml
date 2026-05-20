@@ -1,0 +1,184 @@
+- generic [ref=e1]:
+  - navigation [ref=e3]:
+    - button "Expand sidebar" [ref=e4] [cursor=pointer]:
+      - img [ref=e5]
+    - button "User menu" [ref=e10] [cursor=pointer]:
+      - img "Avatar of Manzura" [ref=e11]
+  - generic [ref=e12]:
+    - complementary [ref=e13]:
+      - navigation [ref=e16]:
+        - list [ref=e17]:
+          - listitem [ref=e18]:
+            - list [ref=e19]:
+              - listitem [ref=e20]:
+                - link "Kitoblar" [ref=e21] [cursor=pointer]:
+                  - /url: https://admin.sehrlikitoblar.uz/admin/books
+                  - img [ref=e22]
+                  - generic [ref=e24]: Kitoblar
+              - listitem [ref=e25]:
+                - link "Mualliflar" [ref=e26] [cursor=pointer]:
+                  - /url: https://admin.sehrlikitoblar.uz/admin/authors
+                  - img [ref=e27]
+                  - generic [ref=e29]: Mualliflar
+              - listitem [ref=e30]:
+                - link "Kategoriyalar" [ref=e31] [cursor=pointer]:
+                  - /url: https://admin.sehrlikitoblar.uz/admin/categories
+                  - img [ref=e32]
+                  - generic [ref=e35]: Kategoriyalar
+              - listitem [ref=e36]:
+                - link "Nashriyotlar" [ref=e37] [cursor=pointer]:
+                  - /url: https://admin.sehrlikitoblar.uz/admin/publishers
+                  - img [ref=e38]
+                  - generic [ref=e40]: Nashriyotlar
+          - listitem [ref=e41]:
+            - generic [ref=e42] [cursor=pointer]:
+              - generic [ref=e43]: Yangiliklar
+              - button "Yangiliklar" [expanded] [ref=e44]:
+                - img [ref=e45]
+            - list [ref=e47]:
+              - listitem [ref=e48]:
+                - link "Yangiliklar" [ref=e49] [cursor=pointer]:
+                  - /url: https://admin.sehrlikitoblar.uz/admin/news
+                  - img [ref=e50]
+                  - generic [ref=e52]: Yangiliklar
+              - listitem [ref=e53]:
+                - link "Yangiliklar kategoriyalari" [ref=e54] [cursor=pointer]:
+                  - /url: https://admin.sehrlikitoblar.uz/admin/news-categories
+                  - img [ref=e55]
+                  - generic [ref=e58]: Yangiliklar kategoriyalari
+              - listitem [ref=e59]:
+                - link "Sharhlar (moderatsiya)" [ref=e60] [cursor=pointer]:
+                  - /url: https://admin.sehrlikitoblar.uz/admin/news-comments
+                  - img [ref=e61]
+                  - generic [ref=e63]: Sharhlar (moderatsiya)
+          - listitem [ref=e64]:
+            - generic [ref=e65] [cursor=pointer]:
+              - generic [ref=e66]: Sozlamalar
+              - button "Sozlamalar" [expanded] [ref=e67]:
+                - img [ref=e68]
+            - list [ref=e70]:
+              - listitem [ref=e71]:
+                - link "Tillar" [ref=e72] [cursor=pointer]:
+                  - /url: https://admin.sehrlikitoblar.uz/admin/tenant-languages
+                  - img [ref=e73]
+                  - generic [ref=e75]: Tillar
+    - main [ref=e77]:
+      - generic [ref=e79]:
+        - generic [ref=e80]:
+          - generic [ref=e81]:
+            - navigation [ref=e82]:
+              - list [ref=e83]:
+                - listitem [ref=e84]:
+                  - link "Mualliflar" [ref=e85] [cursor=pointer]:
+                    - /url: https://admin.sehrlikitoblar.uz/admin/authors
+                - listitem [ref=e86]:
+                  - img [ref=e87]
+                  - generic [ref=e89]: Edit
+            - heading "Edit Muallif" [level=1] [ref=e90]
+          - button "Delete" [ref=e93] [cursor=pointer]
+        - generic [ref=e99]:
+          - generic [ref=e103]:
+            - generic [ref=e107]:
+              - heading "Asosiy ma'lumotlar" [level=2] [ref=e110]
+              - generic [ref=e285]:
+                - tablist "Tarjimalar" [ref=e286]:
+                  - tab "O'zbekcha" [ref=e287] [cursor=pointer]:
+                    - img [ref=e288]
+                    - generic [ref=e290]: O'zbekcha
+                  - tab "English" [active] [ref=e291] [cursor=pointer]:
+                    - img [ref=e292]
+                    - generic [ref=e294]: English
+                - tabpanel "To'liq ism Biografiya URL slug Bo'sh qoldirsangiz avtomatik yaratiladi" [ref=e336]:
+                  - generic [ref=e337]:
+                    - generic [ref=e340]:
+                      - generic [ref=e344]: To'liq ism
+                      - textbox "To'liq ism" [ref=e348]
+                    - generic [ref=e351]:
+                      - generic [ref=e355]: Biografiya
+                      - textbox "Biografiya" [ref=e360]
+                    - generic [ref=e363]:
+                      - generic [ref=e367]: URL slug
+                      - generic [ref=e368]:
+                        - textbox "URL slug" [ref=e371]
+                        - generic [ref=e375]: Bo'sh qoldirsangiz avtomatik yaratiladi
+            - generic [ref=e116]:
+              - generic [ref=e118]:
+                - heading "Yo'nalishlar" [level=2] [ref=e119]
+                - paragraph [ref=e120]: Muallif faoliyat yuritgan yo'nalishlarni tanlang (bir nechtasini tanlash mumkin)
+              - generic [ref=e125]:
+                - generic [ref=e129]: Directions
+                - generic [ref=e132]:
+                  - generic [ref=e134]:
+                    - checkbox "Shoir" [checked] [ref=e135]
+                    - generic [ref=e137]: Shoir
+                  - generic [ref=e139]:
+                    - checkbox "Yozuvchi" [checked] [ref=e140]
+                    - generic [ref=e142]: Yozuvchi
+                  - generic [ref=e144]:
+                    - checkbox "Romansist" [ref=e145]
+                    - generic [ref=e147]: Romansist
+                  - generic [ref=e149]:
+                    - checkbox "Qissanavis" [ref=e150]
+                    - generic [ref=e152]: Qissanavis
+                  - generic [ref=e154]:
+                    - checkbox "Hikoyanavis" [ref=e155]
+                    - generic [ref=e157]: Hikoyanavis
+                  - generic [ref=e159]:
+                    - checkbox "Dramaturg" [ref=e160]
+                    - generic [ref=e162]: Dramaturg
+                  - generic [ref=e164]:
+                    - checkbox "Publitsist" [ref=e165]
+                    - generic [ref=e167]: Publitsist
+                  - generic [ref=e169]:
+                    - checkbox "Essayist" [ref=e170]
+                    - generic [ref=e172]: Essayist
+                  - generic [ref=e174]:
+                    - checkbox "Tarjimon" [ref=e175]
+                    - generic [ref=e177]: Tarjimon
+                  - generic [ref=e179]:
+                    - checkbox "Adabiyotshunos" [ref=e180]
+                    - generic [ref=e182]: Adabiyotshunos
+                  - generic [ref=e184]:
+                    - checkbox "Jurnalist" [ref=e185]
+                    - generic [ref=e187]: Jurnalist
+                  - generic [ref=e189]:
+                    - checkbox "Manbashunos" [ref=e190]
+                    - generic [ref=e192]: Manbashunos
+                  - generic [ref=e194]:
+                    - checkbox "Tarixchi" [ref=e195]
+                    - generic [ref=e197]: Tarixchi
+                  - generic [ref=e199]:
+                    - checkbox "Faylasuf" [ref=e200]
+                    - generic [ref=e202]: Faylasuf
+                  - generic [ref=e204]:
+                    - checkbox "Ilmiy muallif" [ref=e205]
+                    - generic [ref=e207]: Ilmiy muallif
+            - generic [ref=e211]:
+              - heading "Shaxsiy ma'lumotlar" [level=2] [ref=e214]
+              - generic [ref=e216]:
+                - generic [ref=e220]:
+                  - generic [ref=e223]:
+                    - generic [ref=e227]: Tug'ilgan sana
+                    - button [ref=e232] [cursor=pointer]:
+                      - textbox "Tug'ilgan sana" [ref=e233]:
+                        - /placeholder: ""
+                  - generic [ref=e236]:
+                    - generic [ref=e240]: Vafot etgan sana
+                    - button [ref=e245] [cursor=pointer]:
+                      - textbox "Vafot etgan sana" [ref=e246]:
+                        - /placeholder: ""
+                - generic [ref=e250]:
+                  - generic [ref=e253]:
+                    - generic [ref=e257]: Millati
+                    - textbox "Millati" [ref=e261]
+                  - generic [ref=e264]:
+                    - generic [ref=e268]: Veb-sayt
+                    - generic [ref=e270]:
+                      - generic [ref=e272]: https://
+                      - textbox "Veb-sayt" [ref=e274]
+          - generic [ref=e279]:
+            - button "Save changes" [ref=e280] [cursor=pointer]:
+              - generic [ref=e281]: Save changes
+            - button "Cancel" [ref=e282] [cursor=pointer]
+  - generic:
+    - status

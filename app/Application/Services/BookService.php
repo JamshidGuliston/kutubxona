@@ -241,6 +241,22 @@ final class BookService
         return $book;
     }
 
+    public function getBookBySlug(string $slug): ?Book
+    {
+        $tenant = app('tenant');
+        $cacheKey = "tenant:{$tenant->id}:book:slug:{$slug}";
+
+        $book = Cache::remember($cacheKey, 900, function () use ($slug) {
+            return $this->bookRepository->findBySlug($slug);
+        });
+
+        if ($book) {
+            \App\Jobs\IncrementBookView::dispatchAfterResponse($book->id);
+        }
+
+        return $book;
+    }
+
     /**
      * Generate signed download URL for a book file.
      */

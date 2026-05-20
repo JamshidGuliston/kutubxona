@@ -1,0 +1,242 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e3]:
+    - button "Expand sidebar" [ref=e4] [cursor=pointer]:
+      - img [ref=e5]
+    - button "User menu" [ref=e10] [cursor=pointer]:
+      - img "Avatar of Manzura" [ref=e11]
+  - generic [ref=e12]:
+    - complementary [ref=e13]:
+      - navigation [ref=e16]:
+        - list [ref=e17]:
+          - listitem [ref=e18]:
+            - list [ref=e19]:
+              - listitem [ref=e20]:
+                - link "Kitoblar" [ref=e21] [cursor=pointer]:
+                  - /url: https://admin.sehrlikitoblar.uz/admin/books
+                  - img [ref=e22]
+                  - generic [ref=e24]: Kitoblar
+              - listitem [ref=e25]:
+                - link "Mualliflar" [ref=e26] [cursor=pointer]:
+                  - /url: https://admin.sehrlikitoblar.uz/admin/authors
+                  - img [ref=e27]
+                  - generic [ref=e29]: Mualliflar
+              - listitem [ref=e30]:
+                - link "Kategoriyalar" [ref=e31] [cursor=pointer]:
+                  - /url: https://admin.sehrlikitoblar.uz/admin/categories
+                  - img [ref=e32]
+                  - generic [ref=e35]: Kategoriyalar
+              - listitem [ref=e36]:
+                - link "Nashriyotlar" [ref=e37] [cursor=pointer]:
+                  - /url: https://admin.sehrlikitoblar.uz/admin/publishers
+                  - img [ref=e38]
+                  - generic [ref=e40]: Nashriyotlar
+          - listitem [ref=e41]:
+            - generic [ref=e42] [cursor=pointer]:
+              - generic [ref=e43]: Yangiliklar
+              - button "Yangiliklar" [expanded] [ref=e44]:
+                - img [ref=e45]
+            - list [ref=e47]:
+              - listitem [ref=e48]:
+                - link "Yangiliklar" [ref=e49] [cursor=pointer]:
+                  - /url: https://admin.sehrlikitoblar.uz/admin/news
+                  - img [ref=e50]
+                  - generic [ref=e52]: Yangiliklar
+              - listitem [ref=e53]:
+                - link "Yangiliklar kategoriyalari" [ref=e54] [cursor=pointer]:
+                  - /url: https://admin.sehrlikitoblar.uz/admin/news-categories
+                  - img [ref=e55]
+                  - generic [ref=e58]: Yangiliklar kategoriyalari
+              - listitem [ref=e59]:
+                - link "Sharhlar (moderatsiya)" [ref=e60] [cursor=pointer]:
+                  - /url: https://admin.sehrlikitoblar.uz/admin/news-comments
+                  - img [ref=e61]
+                  - generic [ref=e63]: Sharhlar (moderatsiya)
+          - listitem [ref=e64]:
+            - generic [ref=e65] [cursor=pointer]:
+              - generic [ref=e66]: Sozlamalar
+              - button "Sozlamalar" [expanded] [ref=e67]:
+                - img [ref=e68]
+            - list [ref=e70]:
+              - listitem [ref=e71]:
+                - link "Tillar" [ref=e72] [cursor=pointer]:
+                  - /url: https://admin.sehrlikitoblar.uz/admin/tenant-languages
+                  - img [ref=e73]
+                  - generic [ref=e75]: Tillar
+    - main [ref=e77]:
+      - generic [ref=e79]:
+        - generic [ref=e80]:
+          - generic [ref=e81]:
+            - navigation [ref=e82]:
+              - list [ref=e83]:
+                - listitem [ref=e84]:
+                  - link "Kitoblar" [ref=e85] [cursor=pointer]:
+                    - /url: https://admin.sehrlikitoblar.uz/admin/books
+                - listitem [ref=e86]:
+                  - img [ref=e87]
+                  - generic [ref=e89]: List
+            - heading "Kitoblar" [level=1] [ref=e90]
+          - link "New Kitob" [ref=e93] [cursor=pointer]:
+            - /url: https://admin.sehrlikitoblar.uz/admin/books/create
+        - generic [ref=e101]:
+          - generic [ref=e104]:
+            - generic [ref=e105]:
+              - generic [ref=e106]: Search
+              - generic [ref=e107]:
+                - img [ref=e109]
+                - searchbox "Search" [ref=e112]
+            - button "Filter" [ref=e115] [cursor=pointer]:
+              - img [ref=e116]
+              - generic [ref=e119]: "0"
+          - table [ref=e121]:
+            - rowgroup [ref=e122]:
+              - row "Sarlavha Holat PDF Audio Ko'rishlar Yuklamalar Qo'shilgan Actions" [ref=e123]:
+                - columnheader [ref=e124]
+                - columnheader "Sarlavha" [ref=e125]
+                - columnheader "Holat" [ref=e126]
+                - columnheader "PDF" [ref=e127]
+                - columnheader "Audio" [ref=e128]
+                - columnheader "Ko'rishlar" [ref=e129]:
+                  - button "Ko'rishlar" [ref=e130] [cursor=pointer]:
+                    - text: Ko'rishlar
+                    - img [ref=e131]
+                - columnheader "Yuklamalar" [ref=e133]:
+                  - button "Yuklamalar" [ref=e134] [cursor=pointer]:
+                    - text: Yuklamalar
+                    - img [ref=e135]
+                - columnheader "Qo'shilgan" [ref=e137]:
+                  - button "Qo'shilgan" [ref=e138] [cursor=pointer]:
+                    - text: Qo'shilgan
+                    - img [ref=e139]
+                - columnheader "Actions" [ref=e141]
+            - rowgroup [ref=e142]:
+              - row "Shum bola Alisher Navoiy published 0 0 28.04.2026 Edit Delete" [ref=e143]:
+                - cell [ref=e144]:
+                  - link [ref=e145] [cursor=pointer]:
+                    - /url: https://admin.sehrlikitoblar.uz/admin/books/1/edit
+                    - img [ref=e147]
+                - cell "Shum bola Alisher Navoiy" [ref=e148]:
+                  - link "Shum bola Alisher Navoiy" [ref=e149] [cursor=pointer]:
+                    - /url: https://admin.sehrlikitoblar.uz/admin/books/1/edit
+                    - generic [ref=e150]:
+                      - paragraph [ref=e151]: Shum bola
+                      - paragraph [ref=e152]: Alisher Navoiy
+                - cell "published" [ref=e153]:
+                  - link "published" [ref=e154] [cursor=pointer]:
+                    - /url: https://admin.sehrlikitoblar.uz/admin/books/1/edit
+                    - generic [ref=e156]: published
+                - cell [ref=e157]:
+                  - link [ref=e158] [cursor=pointer]:
+                    - /url: https://admin.sehrlikitoblar.uz/admin/books/1/edit
+                - cell [ref=e160]:
+                  - link [ref=e161] [cursor=pointer]:
+                    - /url: https://admin.sehrlikitoblar.uz/admin/books/1/edit
+                - cell "0" [ref=e163]:
+                  - link "0" [ref=e164] [cursor=pointer]:
+                    - /url: https://admin.sehrlikitoblar.uz/admin/books/1/edit
+                    - generic [ref=e165]: "0"
+                - cell "0" [ref=e166]:
+                  - link "0" [ref=e167] [cursor=pointer]:
+                    - /url: https://admin.sehrlikitoblar.uz/admin/books/1/edit
+                    - generic [ref=e168]: "0"
+                - cell "28.04.2026" [ref=e169]:
+                  - link "28.04.2026" [ref=e170] [cursor=pointer]:
+                    - /url: https://admin.sehrlikitoblar.uz/admin/books/1/edit
+                    - generic [ref=e171]: 28.04.2026
+                - cell "Edit Delete" [ref=e172]:
+                  - generic [ref=e173]:
+                    - link "Edit" [ref=e174] [cursor=pointer]:
+                      - /url: https://admin.sehrlikitoblar.uz/admin/books/1/edit
+                      - img [ref=e175]
+                      - text: Edit
+                    - button "Delete" [ref=e178] [cursor=pointer]:
+                      - img [ref=e179]
+                      - text: Delete
+              - row "published 0 0 15.05.2026 Edit Delete" [ref=e181]:
+                - cell [ref=e182]:
+                  - link [ref=e183] [cursor=pointer]:
+                    - /url: https://admin.sehrlikitoblar.uz/admin/books/2/edit
+                    - img [ref=e185]
+                - cell [ref=e186]:
+                  - link [ref=e187] [cursor=pointer]:
+                    - /url: https://admin.sehrlikitoblar.uz/admin/books/2/edit
+                - cell "published" [ref=e189]:
+                  - link "published" [ref=e190] [cursor=pointer]:
+                    - /url: https://admin.sehrlikitoblar.uz/admin/books/2/edit
+                    - generic [ref=e192]: published
+                - cell [ref=e193]:
+                  - link [ref=e194] [cursor=pointer]:
+                    - /url: https://admin.sehrlikitoblar.uz/admin/books/2/edit
+                - cell [ref=e196]:
+                  - link [ref=e197] [cursor=pointer]:
+                    - /url: https://admin.sehrlikitoblar.uz/admin/books/2/edit
+                - cell "0" [ref=e199]:
+                  - link "0" [ref=e200] [cursor=pointer]:
+                    - /url: https://admin.sehrlikitoblar.uz/admin/books/2/edit
+                    - generic [ref=e201]: "0"
+                - cell "0" [ref=e202]:
+                  - link "0" [ref=e203] [cursor=pointer]:
+                    - /url: https://admin.sehrlikitoblar.uz/admin/books/2/edit
+                    - generic [ref=e204]: "0"
+                - cell "15.05.2026" [ref=e205]:
+                  - link "15.05.2026" [ref=e206] [cursor=pointer]:
+                    - /url: https://admin.sehrlikitoblar.uz/admin/books/2/edit
+                    - generic [ref=e207]: 15.05.2026
+                - cell "Edit Delete" [ref=e208]:
+                  - generic [ref=e209]:
+                    - link "Edit" [ref=e210] [cursor=pointer]:
+                      - /url: https://admin.sehrlikitoblar.uz/admin/books/2/edit
+                      - img [ref=e211]
+                      - text: Edit
+                    - button "Delete" [ref=e214] [cursor=pointer]:
+                      - img [ref=e215]
+                      - text: Delete
+              - row "draft 0 0 15.05.2026 Edit Delete" [ref=e217]:
+                - cell [ref=e218]:
+                  - link [ref=e219] [cursor=pointer]:
+                    - /url: https://admin.sehrlikitoblar.uz/admin/books/3/edit
+                    - generic [ref=e220]:
+                      - img
+                - cell [ref=e221]:
+                  - link [ref=e222] [cursor=pointer]:
+                    - /url: https://admin.sehrlikitoblar.uz/admin/books/3/edit
+                - cell "draft" [ref=e224]:
+                  - link "draft" [ref=e225] [cursor=pointer]:
+                    - /url: https://admin.sehrlikitoblar.uz/admin/books/3/edit
+                    - generic [ref=e227]: draft
+                - cell [ref=e228]:
+                  - link [ref=e229] [cursor=pointer]:
+                    - /url: https://admin.sehrlikitoblar.uz/admin/books/3/edit
+                - cell [ref=e231]:
+                  - link [ref=e232] [cursor=pointer]:
+                    - /url: https://admin.sehrlikitoblar.uz/admin/books/3/edit
+                - cell "0" [ref=e234]:
+                  - link "0" [ref=e235] [cursor=pointer]:
+                    - /url: https://admin.sehrlikitoblar.uz/admin/books/3/edit
+                    - generic [ref=e236]: "0"
+                - cell "0" [ref=e237]:
+                  - link "0" [ref=e238] [cursor=pointer]:
+                    - /url: https://admin.sehrlikitoblar.uz/admin/books/3/edit
+                    - generic [ref=e239]: "0"
+                - cell "15.05.2026" [ref=e240]:
+                  - link "15.05.2026" [ref=e241] [cursor=pointer]:
+                    - /url: https://admin.sehrlikitoblar.uz/admin/books/3/edit
+                    - generic [ref=e242]: 15.05.2026
+                - cell "Edit Delete" [ref=e243]:
+                  - generic [ref=e244]:
+                    - link "Edit" [ref=e245] [cursor=pointer]:
+                      - /url: https://admin.sehrlikitoblar.uz/admin/books/3/edit
+                      - img [ref=e246]
+                      - text: Edit
+                    - button "Delete" [ref=e249] [cursor=pointer]:
+                      - img [ref=e250]
+                      - text: Delete
+          - navigation "Pagination navigation" [ref=e252]:
+            - generic [ref=e255]:
+              - generic [ref=e257]: Per page
+              - combobox "Per page" [ref=e259]:
+                - option "5"
+                - option "10" [selected]
+                - option "25"
+                - option "50"
+  - generic:
+    - status

@@ -1,0 +1,147 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e3]:
+    - button "Expand sidebar" [ref=e4] [cursor=pointer]:
+      - img [ref=e5]
+    - button "User menu" [ref=e10] [cursor=pointer]:
+      - img "Avatar of Manzura" [ref=e11]
+  - generic [ref=e12]:
+    - complementary [ref=e13]:
+      - navigation [ref=e16]:
+        - list [ref=e17]:
+          - listitem [ref=e18]:
+            - list [ref=e19]:
+              - listitem [ref=e20]:
+                - link "Kitoblar" [ref=e21] [cursor=pointer]:
+                  - /url: https://admin.sehrlikitoblar.uz/admin/books
+                  - img [ref=e22]
+                  - generic [ref=e24]: Kitoblar
+              - listitem [ref=e25]:
+                - link "Mualliflar" [ref=e26] [cursor=pointer]:
+                  - /url: https://admin.sehrlikitoblar.uz/admin/authors
+                  - img [ref=e27]
+                  - generic [ref=e29]: Mualliflar
+              - listitem [ref=e30]:
+                - link "Kategoriyalar" [ref=e31] [cursor=pointer]:
+                  - /url: https://admin.sehrlikitoblar.uz/admin/categories
+                  - img [ref=e32]
+                  - generic [ref=e35]: Kategoriyalar
+              - listitem [ref=e36]:
+                - link "Nashriyotlar" [ref=e37] [cursor=pointer]:
+                  - /url: https://admin.sehrlikitoblar.uz/admin/publishers
+                  - img [ref=e38]
+                  - generic [ref=e40]: Nashriyotlar
+          - listitem [ref=e41]:
+            - generic [ref=e42] [cursor=pointer]:
+              - generic [ref=e43]: Yangiliklar
+              - button "Yangiliklar" [expanded] [ref=e44]:
+                - img [ref=e45]
+            - list [ref=e47]:
+              - listitem [ref=e48]:
+                - link "Yangiliklar" [ref=e49] [cursor=pointer]:
+                  - /url: https://admin.sehrlikitoblar.uz/admin/news
+                  - img [ref=e50]
+                  - generic [ref=e52]: Yangiliklar
+              - listitem [ref=e53]:
+                - link "Yangiliklar kategoriyalari" [ref=e54] [cursor=pointer]:
+                  - /url: https://admin.sehrlikitoblar.uz/admin/news-categories
+                  - img [ref=e55]
+                  - generic [ref=e58]: Yangiliklar kategoriyalari
+              - listitem [ref=e59]:
+                - link "Sharhlar (moderatsiya)" [ref=e60] [cursor=pointer]:
+                  - /url: https://admin.sehrlikitoblar.uz/admin/news-comments
+                  - img [ref=e61]
+                  - generic [ref=e63]: Sharhlar (moderatsiya)
+          - listitem [ref=e64]:
+            - generic [ref=e65] [cursor=pointer]:
+              - generic [ref=e66]: Sozlamalar
+              - button "Sozlamalar" [expanded] [ref=e67]:
+                - img [ref=e68]
+            - list [ref=e70]:
+              - listitem [ref=e71]:
+                - link "Tillar" [ref=e72] [cursor=pointer]:
+                  - /url: https://admin.sehrlikitoblar.uz/admin/tenant-languages
+                  - img [ref=e73]
+                  - generic [ref=e75]: Tillar
+    - main [ref=e77]:
+      - generic [ref=e79]:
+        - generic [ref=e80]:
+          - generic [ref=e81]:
+            - navigation [ref=e82]:
+              - list [ref=e83]:
+                - listitem [ref=e84]:
+                  - link "Mualliflar" [ref=e85] [cursor=pointer]:
+                    - /url: https://admin.sehrlikitoblar.uz/admin/authors
+                - listitem [ref=e86]:
+                  - img [ref=e87]
+                  - generic [ref=e89]: List
+            - heading "Mualliflar" [level=1] [ref=e90]
+          - link "New Muallif" [ref=e93] [cursor=pointer]:
+            - /url: https://admin.sehrlikitoblar.uz/admin/authors/create
+        - generic [ref=e101]:
+          - generic [ref=e104]:
+            - generic [ref=e105]:
+              - generic [ref=e106]: Search
+              - generic [ref=e107]:
+                - img [ref=e109]
+                - searchbox "Search" [ref=e112]
+            - button "Column manager" [ref=e115] [cursor=pointer]:
+              - img [ref=e116]
+          - table [ref=e119]:
+            - rowgroup [ref=e120]:
+              - row "Ism Yo'nalishlar Tug'ilgan Vafot etgan Millati Kitoblar Actions" [ref=e121]:
+                - columnheader "Ism" [ref=e122]
+                - columnheader "Yo'nalishlar" [ref=e123]
+                - columnheader "Tug'ilgan" [ref=e124]:
+                  - button "Tug'ilgan" [ref=e125] [cursor=pointer]:
+                    - text: Tug'ilgan
+                    - img [ref=e126]
+                - columnheader "Vafot etgan" [ref=e128]
+                - columnheader "Millati" [ref=e129]
+                - columnheader "Kitoblar" [ref=e130]:
+                  - button "Kitoblar" [ref=e131] [cursor=pointer]:
+                    - text: Kitoblar
+                    - img [ref=e132]
+                - columnheader "Actions" [ref=e134]
+            - rowgroup [ref=e135]:
+              - row "Alisher Navoiy , — 2 Edit Delete" [ref=e136]:
+                - cell "Alisher Navoiy" [ref=e137]:
+                  - link "Alisher Navoiy" [ref=e138] [cursor=pointer]:
+                    - /url: https://admin.sehrlikitoblar.uz/admin/authors/1/edit
+                    - generic [ref=e139]: Alisher Navoiy
+                - cell "," [ref=e140]:
+                  - link "," [ref=e141] [cursor=pointer]:
+                    - /url: https://admin.sehrlikitoblar.uz/admin/authors/1/edit
+                    - generic [ref=e142]: ","
+                - cell [ref=e143]:
+                  - link [ref=e144] [cursor=pointer]:
+                    - /url: https://admin.sehrlikitoblar.uz/admin/authors/1/edit
+                - cell "—" [ref=e146]:
+                  - link "—" [ref=e147] [cursor=pointer]:
+                    - /url: https://admin.sehrlikitoblar.uz/admin/authors/1/edit
+                    - paragraph [ref=e149]: —
+                - cell [ref=e150]:
+                  - link [ref=e151] [cursor=pointer]:
+                    - /url: https://admin.sehrlikitoblar.uz/admin/authors/1/edit
+                - cell "2" [ref=e153]:
+                  - link "2" [ref=e154] [cursor=pointer]:
+                    - /url: https://admin.sehrlikitoblar.uz/admin/authors/1/edit
+                    - generic [ref=e155]: "2"
+                - cell "Edit Delete" [ref=e156]:
+                  - generic [ref=e157]:
+                    - link "Edit" [ref=e158] [cursor=pointer]:
+                      - /url: https://admin.sehrlikitoblar.uz/admin/authors/1/edit
+                      - img [ref=e159]
+                      - text: Edit
+                    - button "Delete" [ref=e162] [cursor=pointer]:
+                      - img [ref=e163]
+                      - text: Delete
+          - navigation "Pagination navigation" [ref=e165]:
+            - generic [ref=e168]:
+              - generic [ref=e170]: Per page
+              - combobox "Per page" [ref=e172]:
+                - option "5"
+                - option "10" [selected]
+                - option "25"
+                - option "50"
+  - generic:
+    - status

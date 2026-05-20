@@ -87,9 +87,11 @@ final class BookController extends BaseController
      *   @OA\Response(response=404, description="Book not found")
      * )
      */
-    public function show(int $id): JsonResponse
+    public function show(string $idOrSlug): JsonResponse
     {
-        $book = $this->bookService->getBook($id);
+        $book = is_numeric($idOrSlug)
+            ? $this->bookService->getBook((int) $idOrSlug)
+            : $this->bookService->getBookBySlug($idOrSlug);
 
         if (!$book) {
             return $this->errorResponse('Book not found.', 404);
